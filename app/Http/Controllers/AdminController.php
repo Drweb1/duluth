@@ -9,7 +9,12 @@ use App\Models\customer;
 use App\Models\affiliate;
 use App\Models\cart;
 use App\Models\order;
+use App\Models\special_requirement;
+use App\Models\medical_condition;
+use App\Models\client_special_requirement;
+use App\Models\client_medical_condition;
 use App\Models\user;
+use App\Models\specialization;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
@@ -48,8 +53,10 @@ class AdminController extends Controller
     }
 
     public function dashboard() {
-
-        return view('admin.dashboard');
+        $medics=medical_condition::all();
+        $requires=special_requirement::all();
+        $specializations=specialization::all();
+        return view('admin.dashboard',compact('requires','medics','specializations'));
     }
 
     public function customer(Request $request) {

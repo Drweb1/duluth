@@ -9,6 +9,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\CareGiverController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -68,10 +69,10 @@ Route::group(['middleware' => ['user_auth']], function () {
 
     ///////
     Route::get('view-clients',[ClientController::class,'view'])->name('view-clients');
-    Route::match(['get', 'post'], '/add-client', [ClientController::class, 'add'])->name('add-client');
+    Route::post('/add-client', [ClientController::class, 'add'])->name('add-client');
     Route::match(['get', 'post'], '/documents', [DocumentController::class, 'view'])->name('documents');
     Route::match(['get', 'post'], '/schdules', [ScheduleController::class, 'view'])->name('schdules');
-
+    Route::post('/add-caregiver', [CareGiverController::class, 'add'])->name('add-caregiver');
 });
 
 // Route::middleware('auth')->group(function () {
