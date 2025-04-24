@@ -428,19 +428,19 @@ Dashboard
                                 <h4>Personal Information</h4>
                                 <div class="row">
                                     <div class="form-group col-md-6">
-                                        <label>Name</label>
+                                        <label>Name<x-required_field/></label>
                                         <input type="text" name="name" class="form-control" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Email</label>
+                                        <label>Email<x-required_field/></label>
                                         <input type="email" name="email" class="form-control" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Phone</label>
+                                        <label>Phone<x-required_field/></label>
                                         <input type="text" name="phone" class="form-control" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Date of Birth</label>
+                                        <label>Date of Birth<x-required_field/></label>
                                         <input type="date" name="dob" class="form-control" required>
                                     </div>
                                     <div class="form-group col-12">
@@ -452,15 +452,15 @@ Dashboard
                                 <h4 class="mt-4">Emergency Contact</h4>
                                 <div class="row">
                                     <div class="form-group col-md-6">
-                                        <label>Contact Name</label>
+                                        <label>Contact Name<x-required_field/></label>
                                         <input type="text" name="emergency_contact_name" class="form-control" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Phone</label>
+                                        <label>Phone<x-required_field/></label>
                                         <input type="text" name="emergency_phone" class="form-control" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Relationship</label>
+                                        <label>Relationship<x-required_field/></label>
                                         <input type="text" name="emergency_relationship" class="form-control" required>
                                     </div>
                                     <div class="form-group col-md-6">
@@ -478,7 +478,7 @@ Dashboard
                                 <h4>Care Requirements</h4>
                                 <div class="row">
                                     <div class="form-group col-md-6">
-                                        <label>Care Type</label>
+                                        <label>Care Type<x-required_field/></label>
                                         <select name="care_type" class="form-control" required>
                                             <option value="">-- Select Care Type --</option>
                                             <option value="Daily Care">Daily Care</option>
@@ -489,11 +489,11 @@ Dashboard
                                     </div>
 
                                     <div class="form-group col-md-6">
-                                        <label>Frequency</label>
+                                        <label>Frequency<x-required_field/></label>
                                         <input type="text" name="frequency" class="form-control" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Start Date</label>
+                                        <label>Start Date<x-required_field/></label>
                                         <input type="date" name="start_date" class="form-control" required>
                                     </div>
                                 </div>
@@ -542,11 +542,11 @@ Dashboard
                                 <h3>Insurance Information</h3>
                                 <div class="row">
                                     <div class="form-group col-md-6">
-                                        <label>Insurance Provider</label>
+                                        <label>Insurance Provider<x-required_field/></label>
                                         <input type="text" name="insurance_provider" class="form-control" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Policy Number</label>
+                                        <label>Policy Number<x-required_field/></label>
                                         <input type="text" name="policy_number" class="form-control" required>
                                     </div>
                                     <div class="form-group col-md-6">
@@ -587,13 +587,13 @@ Dashboard
         </div>
     </div>
     <div class="modal fade" id="addcare_giver_Modal" tabindex="-1" role="dialog" aria-labelledby="addcare_giver_Modal"
-    aria-hidden="true">
+     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <form action="{{ route('add-caregiver') }}" method="POST" id="caregiver_form" novalidate>
+        <form action="{{ route('add-caregiver') }}" method="POST" id="caregiver_form" novalidate enctype="multipart/form-data">
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add New Client</h5>
+                    <h5 class="modal-title">Add New Caregiver</h5>
                     <button type="button" class="close" data-dismiss="modal">
                         <span>&times;</span>
                     </button>
@@ -625,19 +625,19 @@ Dashboard
                             <h4>Personal Information</h4>
                             <div class="row">
                                 <div class="form-group col-md-6">
-                                    <label>Name</label>
+                                    <label>Name<x-required_field/></label>
                                     <input type="text" name="c_name" class="form-control" required>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>Email</label>
+                                    <label>Email<x-required_field/></label>
                                     <input type="email" name="c_email" class="form-control" required>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>Phone</label>
+                                    <label>Phone<x-required_field/></label>
                                     <input type="text" name="c_phone" class="form-control" required>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>Date of Birth</label>
+                                    <label>Date of Birth<x-required_field/></label>
                                     <input type="date" name="c_dob" class="form-control" required>
                                 </div>
                                 <div class="form-group col-12">
@@ -648,15 +648,15 @@ Dashboard
                             <h4 class="mt-4">Emergency Contact</h4>
                             <div class="row">
                                 <div class="form-group col-md-6">
-                                    <label>Contact Name</label>
+                                    <label>Contact Name <x-required_field/></label>
                                     <input type="text" name="c_emergency_contact_name" class="form-control" required>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>Phone</label>
+                                    <label>Phone <x-required_field/></label>
                                     <input type="text" name="c_emergency_phone" class="form-control" required>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>Relationship</label>
+                                    <label>Relationship <x-required_field/></label>
                                     <input type="text" name="c_emergency_relationship" class="form-control" required>
                                 </div>
                             </div>
@@ -667,7 +667,7 @@ Dashboard
                         <div class="step step-2 d-none" id="new-modal-step2">
                             <div class="row">
                                 <div class="form-group col-md-6">
-                                    <label for="certification">Certification</label>
+                                    <label for="certification">Certification<x-required_field/></label>
                                     <select name="certification" id="certification" class="form-control" required>
                                         <option value="">Select Certification</option>
                                         <option value="HHA">HHA</option>
@@ -678,7 +678,7 @@ Dashboard
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label for="experience">Experience (in years)</label>
+                                    <label for="experience">Experience (in years)<x-required_field/></label>
                                     <input type="number" name="experience" id="experience" class="form-control" min="0" required>
                                 </div>
                             </div>
@@ -736,7 +736,6 @@ Dashboard
                             <div class="document-checklist">
                                 <div class="doc-row">
                                     <div class="doc-info">
-                                        <input type="checkbox" id="background_check" name="bg-check" value="background_check">
                                         <label for="background_check" style="margin-bottom: 1px;">Background Check</label>
                                     </div>
                                     <div class="doc-upload">
@@ -748,7 +747,6 @@ Dashboard
                                 </div>
                                 <div class="doc-row">
                                     <div class="doc-info">
-                                        <input type="checkbox" id="cpr_certification" name="crp-certificate" value="cpr_certification">
                                         <label for="cpr_certification" style="margin-bottom: 1px;">CPR Certification</label>
                                     </div>
                                     <div class="doc-upload">
@@ -760,7 +758,6 @@ Dashboard
                                 </div>
                                 <div class="doc-row">
                                     <div class="doc-info">
-                                        <input type="checkbox" id="tb_test" name="tb-test" value="tb_test">
                                         <label for="tb_test" style="margin-bottom: 1px;">TB Test Results</label>
                                     </div>
                                     <div class="doc-upload">
@@ -772,7 +769,6 @@ Dashboard
                                 </div>
                                 <div class="doc-row">
                                     <div class="doc-info">
-                                        <input type="checkbox" id="drivers_license" name="licence" value="drivers_license">
                                         <label for="drivers_license" style="margin-bottom: 1px;">Driver's License</label>
                                     </div>
                                     <div class="doc-upload">
@@ -798,12 +794,12 @@ Dashboard
                                     <option value="flexible">Flexible</option>
                                 </select>
                             </div>
-
+                            <div id="formErrorMsgContainer"></div>
                             <button type="button" class="btn btn-secondary prev-btn">
                                 <i class="fas fa-arrow-left"></i> Previous
                             </button>
-                            <button type="submit" class="btn btn-success float-right">
-                                Save Client
+                            <button type="submit" class="btn btn-success float-right" id="submitBtn">
+                                Save Caregiver
                             </button>
                         </div>
 
@@ -911,31 +907,42 @@ Dashboard
         $('#client_form').on('submit', function (e) {
             e.preventDefault();
 
+            let form = $(this); // reference to the form
             let formData = new FormData(this);
+            let submitBtn = form.find('button[type="submit"]'); // ✅ define the submit button inside the form
+            let originalBtnText = submitBtn.html();
+
+            submitBtn.prop('disabled', true).html('Submitting...');
 
             $.ajax({
-                url: $(this).attr('action'),
+                url: form.attr('action'),
                 method: 'POST',
                 data: formData,
                 processData: false,
                 contentType: false,
                 beforeSend: function () {
-                    $('.is-invalid').removeClass('is-invalid');
-                    $('.invalid-feedback').remove();
+                    form.find('.is-invalid').removeClass('is-invalid');
+                    form.find('.invalid-feedback').remove();
+                    form.find('#formErrorMsg').remove();
                 },
                 success: function (response) {
-                    $('#successModal').modal('show');
-                    // alert('Client saved successfully!');
-                    $('#client_form')[0].reset();
+                    if (response.message) {
+                        alert(response.message);
+                        form[0].reset();
+                    }
+                    submitBtn.prop('disabled', false).html(originalBtnText);
                 },
                 error: function (xhr) {
+                    submitBtn.prop('disabled', false).html(originalBtnText);
+
                     if (xhr.status === 422) {
                         let errors = xhr.responseJSON.errors;
                         $.each(errors, function (field, messages) {
-                            let input = $('[name="' + field + '"]');
+                            let input = form.find('[name="' + field + '"]');
                             input.addClass('is-invalid');
                             input.after('<div class="invalid-feedback">' + messages[0] + '</div>');
                         });
+                        form.prepend('<div id="formErrorMsg" class="alert alert-danger mb-3">An error occurred. Please fix the highlighted fields.</div>');
                     } else {
                         alert('An unexpected error occurred. Please try again.');
                     }
@@ -944,6 +951,7 @@ Dashboard
         });
     });
 </script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const steps = ['#new-modal-step1', '#new-modal-step2', '#new-modal-step3'];
@@ -1028,6 +1036,55 @@ Dashboard
         showStep(currentStep);
     });
 </script>
+<script>
+    $(document).ready(function () {
+        $('#caregiver_form').on('submit', function (e) {
+            e.preventDefault();
 
+            let form = $(this);
+            let formData = new FormData(this);
+            let submitBtn = form.find('#submitBtn');
+            let originalBtnText = submitBtn.html();
+
+            submitBtn.prop('disabled', true).html('Submitting...');
+
+            $.ajax({
+                url: form.attr('action'),
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                beforeSend: function () {
+                    $('.is-invalid').removeClass('is-invalid');
+                    $('.invalid-feedback').remove();
+                    $('#formErrorMsg').remove(); // Remove any previous general error
+                },
+                success: function (response) {
+                    console.log(response);
+                    if (response.message) {
+                        alert(response.message); // Show the success message
+                        form[0].reset(); // Reset the form
+                    }
+                    submitBtn.prop('disabled', false).html(originalBtnText); // Restore button after submission
+                },
+                error: function (xhr) {
+                    submitBtn.prop('disabled', false).html(originalBtnText); // Restore button if error occurs
+
+                    if (xhr.status === 422) {
+                        let errors = xhr.responseJSON.errors;
+                        $.each(errors, function (field, messages) {
+                            let input = form.find('[name="' + field + '"]');
+                            input.addClass('is-invalid');
+                            input.after('<div class="invalid-feedback">' + messages[0] + '</div>');
+                        });
+                        form.prepend('<div id="formErrorMsg" class="alert alert-danger mb-3">An error occurred. Please fix the highlighted fields.</div>');
+                    } else {
+                        alert('An unexpected error occurred. Please try again.');
+                    }
+                }
+            });
+        });
+    });
+</script>
 
     @endsection

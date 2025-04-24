@@ -13,19 +13,18 @@ use App\Models\special_requirement;
 use App\Models\medical_condition;
 use App\Models\client_special_requirement;
 use App\Models\client_medical_condition;
+use Illuminate\Support\Facades\Validator;
 class ClientController extends Controller
 {
     public function view(Request $request)
     {
-        $clients = user::where('type', 'client')
-
-        ->get();
+        $clients = user::where('type', 'client')->with('get_profile')->get();
         return view('clients.view', compact('clients'));
     }
 
     public function add(Request $req)
     {
-        $validated = $req->validate([
+        $validator = Validator::make($req->all(), [
             'name'                      => 'required|string|max:255',
             'email'                     => 'required|email|unique:users,email',
             'phone'                     => 'required|string|max:20',
@@ -48,6 +47,9 @@ class ClientController extends Controller
             'group_number'              => 'nullable|string|max:100',
             'insurance_card'            => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
         try {
             $client = new User();
@@ -58,7 +60,8 @@ class ClientController extends Controller
             $client->type = 'client';
             $client->password = Str::random(6);
              $client->role = "client";
-            $client->external_id = Str::uuid();
+             $client->external_id ="clinet_".substr((string) Str::uuid(), 0, 6);
+
 
             if ($client->save()) {
                 $profile = new user_profile();
@@ -82,7 +85,6 @@ class ClientController extends Controller
 
                 $profile->save();
                 // dd("hgdjd");
-                // Save medical conditions
                 // return $req->medical_conditions;
                 foreach ($req->medical_conditions as $conditionId) {
                     $conditionId = (int) $conditionId;
@@ -103,14 +105,19 @@ class ClientController extends Controller
                     $requirement->save();
                 }
             }
-
-            // Return success message
-            return redirect()->back()->with('success', 'Client added successfully!');
-
+        return response()->json(['message' => 'Client added successfully!'], 200);
         } catch (\Exception $e) {
-            Log::error('Error adding client: ' . $e->getMessage(), ['exception' => $e]);
-            return redirect()->back()->with('error', 'An error occurred while adding the client. Please try again.' . $e->getMessage());
+            return response()->json([
+                'message' => 'Failed to add client. Please try again later.',
+                'error' => $e->getMessage()
+            ], 500);
         }
+    }
+    public function delete($id)
+    {
+        $client = User::where('type', 'client')->findOrFail($id);
+        $client->delete();
+        return redirect()->back()->with('success', 'Client deleted successfully.');
     }
 
 }

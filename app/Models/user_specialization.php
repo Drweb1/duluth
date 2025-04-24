@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class user_specialization extends Model
 {
     use HasFactory;
+    public function get_speciality()
+    {
+        return $this->belongsTo(specialization::class, 'specialization_id', 'id');
+    }
+
 }

@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class user_availability extends Model
 {
     use HasFactory;
+
 }

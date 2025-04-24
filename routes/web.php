@@ -70,9 +70,12 @@ Route::group(['middleware' => ['user_auth']], function () {
     ///////
     Route::get('view-clients',[ClientController::class,'view'])->name('view-clients');
     Route::post('/add-client', [ClientController::class, 'add'])->name('add-client');
+    Route::get('/clients/delete/{id}', [ClientController::class, 'delete'])->name('clients.delete');
     Route::match(['get', 'post'], '/documents', [DocumentController::class, 'view'])->name('documents');
     Route::match(['get', 'post'], '/schdules', [ScheduleController::class, 'view'])->name('schdules');
     Route::post('/add-caregiver', [CareGiverController::class, 'add'])->name('add-caregiver');
+    Route::get('view-caregivers',[CareGiverController::class,'view'])->name('view-caregivers');
+    Route::get('/caregiver/delete/{id}', [CareGiverController::class, 'delete'])->name('caregiver.delete');
 });
 
 // Route::middleware('auth')->group(function () {
