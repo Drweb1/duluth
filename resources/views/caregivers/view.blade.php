@@ -48,8 +48,9 @@ Caregivers
                                     <th>Caregiver ID</th>
                                     <th>Email</th>
                                     <th>Phone</th>
-                                    <th>Specialty</th>
-                                    <th>Location</th>
+                                    <th>Address</th>
+                                    {{-- <th>Specialty</th>
+                                    <th>Location</th> --}}
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -60,8 +61,9 @@ Caregivers
                                     <td>{{ $caregiver->external_id }}</td>
                                     <td>{{ $caregiver->email }}</td>
                                     <td>{{ $caregiver->phone }}</td>
-                                    <td>
-                                        <div class="dropdown">
+                                    <td>{{ $caregiver->get_profile->address ?? '' }}</td>
+                                    {{-- <td>
+                                         <div class="dropdown">
                                             <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="bi bi-star"></i> View Specialties
                                             </button>
@@ -75,9 +77,8 @@ Caregivers
                                                 @endforeach
                                             </ul>
                                         </div>
-                                    </td>
-
-                                    <td>
+                                    </td> --}}
+                                    {{-- <td>
                                         <div class="dropdown">
                                             <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="bi bi-calendar"></i> View Availabilities
@@ -92,14 +93,22 @@ Caregivers
                                                 @endforeach
                                             </ul>
                                         </div>
-                                    </td>
+                                    </td> --}}
                                     <td>
+                                        <a href="{{ route('caregiver.edit', $caregiver->external_id) }}"
+                                            class="btn btn-sm btn-primary me-1" title="Edit">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+
                                         <a href="{{ route('caregiver.delete', $caregiver->id) }}"
                                             class="btn btn-sm btn-danger me-1" title="Delete"
                                             onclick="return confirm('Are you sure you want to delete this caregiver?')">
                                             <i class="fa fa-trash"></i>
                                         </a>
-
+                                        <a href="{{ route('caregiver.profile', $caregiver->external_id) }}"
+                                            class="btn btn-sm btn-primary me-1" title="Edit">
+                                            <i class="fa fa-user"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 @endforeach

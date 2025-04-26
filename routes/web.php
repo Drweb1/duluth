@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\NurseController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\CareGiverController;
 // Route::get('/', function () {
@@ -70,12 +71,18 @@ Route::group(['middleware' => ['user_auth']], function () {
     ///////
     Route::get('view-clients',[ClientController::class,'view'])->name('view-clients');
     Route::post('/add-client', [ClientController::class, 'add'])->name('add-client');
+    Route::match(['get','post'],'/edit/{id}',[ClientController::class,'edit'])->name('client.edit');
     Route::get('/clients/delete/{id}', [ClientController::class, 'delete'])->name('clients.delete');
     Route::match(['get', 'post'], '/documents', [DocumentController::class, 'view'])->name('documents');
     Route::match(['get', 'post'], '/schdules', [ScheduleController::class, 'view'])->name('schdules');
     Route::post('/add-caregiver', [CareGiverController::class, 'add'])->name('add-caregiver');
     Route::get('view-caregivers',[CareGiverController::class,'view'])->name('view-caregivers');
     Route::get('/caregiver/delete/{id}', [CareGiverController::class, 'delete'])->name('caregiver.delete');
+    Route::match(['get','post'],'/caregiver_edit/{id}',[CaregiverController::class,'edit'])->name('caregiver.edit');
+    Route::get('/clients/profile/{id}', [ClientController::class, 'profile'])->name('client.profile');
+    Route::get('/caregiver/profile/{id}', [CareGiverController::class, 'profile'])->name('caregiver.profile');
+    Route::get('/nurse',[NurseController::class,'view'])->name('nurses');
+    Route::post('/nurse/add',[NurseController::class,'add'])->name('nurse.add');
 });
 
 // Route::middleware('auth')->group(function () {

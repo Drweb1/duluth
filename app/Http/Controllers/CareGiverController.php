@@ -10,7 +10,10 @@ use App\Models\user_availability;
 use Illuminate\Support\Str;
 use App\Models\specialization;
 use App\Models\user_specialization;
+use App\Models\language;
+use App\Models\user_language;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 use App\Models\special_requirement;
 use App\Models\medical_condition;
 use App\Models\client_special_requirement;
@@ -20,7 +23,7 @@ class CareGiverController extends Controller
 {
     public function view(Request $request)
     {
-       $caregivers = user::where('type', 'caregiver')->with('get_profile','get_availabilities','get_specialities.get_speciality')->get();
+       $caregivers = user::where('type', 'caregiver')->with('get_profile','get_availabilities','get_specialities.get_speciality')->latest()->get();
         return view('caregivers.view', compact('caregivers'));
     }
     public function add(Request $req)
@@ -75,21 +78,21 @@ class CareGiverController extends Controller
 
                 if ($req->hasFile('background_check_file')) {
                     // dd("jehgdywfd");
-                    $profile->background_check = $req->file('background_check_file')->store('caregiver_docs');
+                    $profile->background_check = $req->file('background_check_file')->store('public/caregiver_docs');
                 }
 
                 if ($req->hasFile('cpr_certification_file')) {
-                    $profile->cpr_certification = $req->file('cpr_certification_file')->store('caregiver_docs');
+                    $profile->crp_certification = $req->file('cpr_certification_file')->store('public/caregiver_docs');
                 }
 
                 if ($req->hasFile('tb_test_file')) {
-                    $profile->tb_test = $req->file('tb_test_file')->store('caregiver_docs');
+                    $profile->tb_test = $req->file('tb_test_file')->store('public/caregiver_docs');
                 }
 
                 if ($req->hasFile('drivers_license_file')) {
-                    $profile->licence = $req->file('drivers_license_file')->store('caregiver_docs');
+                    $profile->licence = $req->file('drivers_license_file')->store('public/caregiver_docs');
                 }
-        $profile->save();
+            $profile->save();
 
                 if ($profile->save()) {
                     foreach ($req->availabilities as $availabilityData) {
@@ -100,7 +103,14 @@ class CareGiverController extends Controller
                         $availability->save();
                     }
 
-
+                    foreach ($req->languages as $langId) {
+                        $userLanguage = new user_language();
+                        $userLanguage->user_id = $caregiver->id;
+                        $userLanguage->language_id = $langId;
+                        $userLanguage->created_at = now();
+                        $userLanguage->updated_at = now();
+                        $userLanguage->save();
+                    }
                     foreach ($req->specializations as $specializationId) {
                         $specialization = new user_specialization();
                         $specialization->user_id = $caregiver->id;
@@ -124,5 +134,99 @@ class CareGiverController extends Controller
         $client = User::where('type', 'caregiver')->findOrFail($id);
         $client->delete();
         return redirect()->back()->with('success', 'Caregiver deleted successfully.');
+    }
+    public function edit(Request $req, $id){
+        $caregiver= user::where('external_id',$id)->where('type', 'caregiver')->with('get_profile','get_availabilities','get_specialities.get_speciality','get_languages.get_language')->first();
+        if ($req->method() == 'POST') {
+            $validator = Validator::make($req->all(), [
+                'name'                      => 'required|string|max:255',
+                'email' => [
+                    'required',
+                    'email',
+                    Rule::unique('users', 'email')->ignore($caregiver->id),
+                ],
+                'phone'                     => 'required|string|max:20',
+                'dob'                       => 'required|date',
+                'availabilities'              => 'required|array',
+                'address'                   => 'nullable|string|max:255',
+                'emergency_contact_name'    => 'required|string|max:255',
+                'emergency_phone'           => 'required|string|max:20',
+                'emergency_relationship'    => 'required|string|max:100',
+                'emergency_email'           => 'nullable|email|max:255',
+                'care_type'                 => 'nullable|string|in:Daily Care,Weekly,Respite,Specialized',
+                'experience_years'          => 'nullable|numeric|min:0',
+                'certifications'            => 'nullable|array',
+                'background_check_file'     => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+                'cpr_certification_file'    => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+                'tb_test_file'              => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+                'drivers_license_file'      => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            ]);
+            if ($validator->fails()) {
+                return redirect()->back()->with(['errors' => $validator->errors()], 422);
+            }
+
+            try {
+                $caregiver= user::where('external_id',$id)->where('type', 'caregiver')->with('get_profile','get_availabilities','get_specialities.get_speciality','get_languages.get_language')->first();
+                $caregiver->name = $req->name;
+                $caregiver->email = $req->email;
+                $caregiver->phone = $req->phone;
+                if($caregiver->save()){
+
+                    $profile = user_profile::where('user_id',$caregiver->id)->first();
+                    $profile->date_of_birth = $req->dob;
+                    $profile->address = $req->address;
+                    $profile->experience_years = $req->experience;
+                    $profile->certification = $req->certification;
+                    $profile->schedule = $req->preferred_schedule;
+                    $profile->start_date= $req->start_date;
+                    $profile->emergency_contact_name = $req->emergency_contact_name;
+                    $profile->emergency_phone = $req->emergency_phone;
+                    $profile->emergency_relation = $req->emergency_relationship;
+                    $profile->care_type = $req->care_type;
+
+                    if ($req->hasFile('background_check_file')) {
+                        // dd("jehgdywfd");
+                        $profile->background_check = $req->file('background_check_file')->store('public/caregiver_docs');
+                    }
+
+                    if ($req->hasFile('cpr_certification_file')) {
+                        $profile->crp_certification = $req->file('cpr_certification_file')->store('public/caregiver_docs');
+                    }
+
+                    if ($req->hasFile('tb_test_file')) {
+                        $profile->tb_test = $req->file('tb_test_file')->store('public/caregiver_docs');
+                    }
+
+                    if ($req->hasFile('drivers_license_file')) {
+                        $profile->licence = $req->file('drivers_license_file')->store('public/caregiver_docs');
+                    }
+
+                    if ($profile->save()) {
+                        $caregiver->get_availabilities()->delete();
+                        foreach ($req->availabilities as $availabilityData) {
+                            $availability = new user_availability();
+                            $availability->user_id = $caregiver->id;
+                            $availability->day = $availabilityData;
+                            $availability->created_at = now();
+                            $availability->save();
+                        }
+                        $caregiver->languages()->sync($req->languages);
+                        $caregiver->specializations()->sync($req->specializations);
+
+                    }
+
+                }
+                return redirect()->back()->with('success', 'Caregiver added successfully!');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Failed to update client. Please try again later. ' . $e->getMessage());
+            }
+        }
+       $specializations=specialization::all();
+        $languages=language::all();
+        return view('caregivers.edit',compact('caregiver','specializations','languages'));
+    }
+    public function profile($id){
+        $caregiver= user::where('external_id',$id)->where('type', 'caregiver')->with('get_profile','get_availabilities','get_specialities.get_speciality','get_languages.get_language')->first();
+        return view('caregivers.profile',compact('caregiver'));
     }
 }

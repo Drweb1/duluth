@@ -8,6 +8,8 @@ use App\Models\item;
 use App\Models\customer;
 use App\Models\affiliate;
 use App\Models\cart;
+use App\Models\language;
+use App\Models\user_language;
 use App\Models\order;
 use App\Models\special_requirement;
 use App\Models\medical_condition;
@@ -56,7 +58,8 @@ class AdminController extends Controller
         $medics=medical_condition::all();
         $requires=special_requirement::all();
         $specializations=specialization::all();
-        return view('admin.dashboard',compact('requires','medics','specializations'));
+        $languages=language::all();
+        return view('admin.dashboard',compact('requires','medics','languages','specializations'));
     }
 
     public function customer(Request $request) {

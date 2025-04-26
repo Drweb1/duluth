@@ -589,7 +589,7 @@ Dashboard
     <div class="modal fade" id="addcare_giver_Modal" tabindex="-1" role="dialog" aria-labelledby="addcare_giver_Modal"
      aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <form action="{{ route('add-caregiver') }}" method="POST" id="caregiver_form" novalidate enctype="multipart/form-data">
+        <form action="{{ route('add-caregiver') }}" class="form theme-form" method="POST" id="caregiver_form" novalidate enctype="multipart/form-data">
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
@@ -697,11 +697,11 @@ Dashboard
 
                             <h4 class="mt-4">Languages</h4>
                             <div class="row">
-                                @foreach(['Spanish', 'English', 'French', 'Arabic', 'Mandarin', 'Other'] as $lang)
+                                @foreach($languages as $lang)
                                     <div class="col-sm-6 col-md-4 mb-2">
                                         <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="languages[]" value="{{ $lang }}" id="lang_{{ $lang }}">
-                                            <label class="form-check-label" for="lang_{{ $lang }}">{{ $lang }}</label>
+                                            <input type="checkbox" class="form-check-input" name="languages[]" value="{{ $lang->id }}" id="lang_{{ $lang }}">
+                                            <label class="form-check-label" for="lang_{{ $lang }}">{{ $lang->name}}</label>
                                         </div>
                                     </div>
                                 @endforeach

@@ -73,16 +73,15 @@ Clients
                                             onclick="return confirm('Are you sure you want to delete this client?')">
                                             <i class="fa fa-trash"></i>
                                         </a>
-
-                                        {{-- <a href="{{ route('clients.edit', $client->id) }}"
+                                        <a href="{{ route('client.edit', $client->external_id) }}"
                                             class="btn btn-sm btn-primary me-1" title="Edit">
                                             <i class="fa fa-edit"></i>
                                         </a>
 
-                                        <a href="{{ route('clients.profile', $client->id) }}"
+                                        <a href="{{ route('client.profile', $client->external_id) }}"
                                             class="btn btn-sm btn-info text-light" title="Profile">
                                             <i class="fa fa-user"></i>
-                                        </a> --}}
+                                        </a>
                                     </td>
                                 </tr>
                                 @endforeach
