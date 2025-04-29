@@ -392,7 +392,7 @@ Dashboard
     <div class="modal fade" id="addClientModal" tabindex="-1" role="dialog" aria-labelledby="addClientModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            <form action="{{ route('add-client') }}" method="POST" id="client_form" novalidate>
+            <form action="{{ route('add-client') }}" method="POST" class="form theme-form" id="client_form" novalidate>
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">

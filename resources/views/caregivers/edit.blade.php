@@ -24,7 +24,7 @@ Caregiver
                     </div>
                     <div class="col-lg-6 text-right ">
                         <a href="{{ route('view-caregivers') }}" class="btn btn-sm btn-primary">
-                            Clients
+                            Caregivers
                         </a>
                     </div>
                 </div>

@@ -55,13 +55,13 @@ Nurses
                                         <th>Name</th>
                                         <th>Nurse ID</th>
                                         <th>Email</th>
-                                        <th>Phone</th>>
+                                        <th>Phone</th>
                                         <th>Location</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($nurses as $nurse)
+                                    @foreach($nurses as $index => $nurse)
                                     <tr>
                                         <td>{{ $nurse->name }}</td>
                                         <td>{{ $nurse->external_id }}</td>
@@ -70,12 +70,13 @@ Nurses
                                         <td>{{ $nurse->get_profile->address ?? 'N/A' }}</td>
 
                                         <td>
-                                            {{-- <a href="{{ route('nurses.delete', $nurse->id) }}" class="btn btn-sm btn-danger me-1" title="Delete" onclick="return confirm('Are you sure you want to delete this nurse?')">
+                                            <a href="{{ route('nurse.delete', $nurse->id) }}" class="btn btn-sm btn-danger me-1" title="Delete" onclick="return confirm('Are you sure you want to delete this nurse?')">
                                                 <i class="fa fa-trash"></i>
                                             </a>
-                                            <a href="{{ route('nurses.edit', $nurse->id) }}" class="btn btn-sm btn-primary me-1" title="Edit">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
+                                            <a href="#" class="btn btn-sm btn-primary me-1" title="Edit" data-bs-toggle="modal" data-bs-target="#editNurseModal{{ $index }}">
+                                             <i class="fa fa-edit"></i>
+                                         </a>
+                                            {{--
                                             <a href="{{ route('nurses.profile', $nurse->id) }}" class="btn btn-sm btn-info text-light" title="Profile">
                                                 <i class="fa fa-user"></i>
                                             </a> --}}
@@ -166,6 +167,60 @@ Nurses
 
 
 </div>
+@foreach($nurses as $index => $nurse)
+    <div class="modal fade" id="editNurseModal{{ $index }}" tabindex="-1" aria-labelledby="editNurseModalLabel{{ $index }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <form method="POST" action="{{ route('nurse.edit', $nurse->external_id) }}" class="form theme-form">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editNurseModalLabel{{ $index }}">Edit Nurse</h5>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="mb-3 col-md-6 form-group">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-control" name="name" value="{{ $nurse->name }}">
+                            </div>
+
+                            <div class="mb-3 col-md-6 form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="email" value="{{ $nurse->email }}">
+                            </div>
+
+                            <div class="mb-3 col-md-6 form-group">
+                                <label class="form-label">Phone</label>
+                                <input type="text" class="form-control" name="phone" value="{{ $nurse->phone }}">
+                            </div>
+
+                            <div class="mb-3 col-md-6 form-group">
+                                <label class="form-label">Date of Birth</label>
+                                <input type="date" class="form-control" name="dob" value="{{ $nurse->get_profile->date_of_birth }}">
+                            </div>
+
+                            <div class="mb-3 col-md-6 form-group">
+                                <label class="form-label">Salary</label>
+                                <input type="number" step="0.01" class="form-control" name="salary" value="{{ $nurse->salary }}">
+                            </div>
+
+                            <div class="mb-3 col-md-12 form-group">
+                                <label class="form-label">Address</label>
+                                <textarea class="form-control" name="address" rows="2">{{ $nurse->get_profile->address }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+@endforeach
 
 <script>
     $(document).ready(function() {

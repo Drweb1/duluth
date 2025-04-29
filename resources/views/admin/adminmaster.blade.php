@@ -108,7 +108,7 @@
         </div>
     </div>
 
-      <!-- Page Header Ends                              -->
+      <!-- Page Header Ends-->
       <!-- Page Body Start-->
       <div class="page-body-wrapper">
         <!-- Page Sidebar Start-->
@@ -134,7 +134,7 @@
               </li>
               <li><a class="bar-icons" href="{{route('view-caregivers')}}"><i class="fa fa-users"></i><span>Caregivers Management</span></a>
               </li>
-              <li><a class="bar-icons" href="{{route('nurses')}}"><i class="fa fa-stethoscope"></i><span>Clients</span></a>
+              <li><a class="bar-icons" href="{{route('nurses')}}"><i class="fa fa-stethoscope"></i><span>Nurses</span></a>
               </li>
               {{-- <li><a class="bar-icons" href="{{route('affiliates')}}"><i class="pe-7s-news-paper"></i><span>Affilliates</span></a>
               </li> --}}
