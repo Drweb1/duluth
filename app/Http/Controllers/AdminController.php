@@ -19,8 +19,7 @@ use App\Models\user;
 use App\Models\specialization;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-
-
+use App\Models\schedule;
 class AdminController extends Controller
 {
     public function login(Request $req)
@@ -31,7 +30,6 @@ class AdminController extends Controller
                 'password' => 'required',
             ]);
             $user = user::where('email', $req->email) ->where('password', $req->password)
-                         ->where('type', 'admin')
                          ->first();
 
             if (!$user) {
@@ -55,11 +53,13 @@ class AdminController extends Controller
     }
 
     public function dashboard() {
+
         $medics=medical_condition::all();
         $requires=special_requirement::all();
         $specializations=specialization::all();
         $languages=language::all();
-        return view('admin.dashboard',compact('requires','medics','languages','specializations'));
+        $schedules=schedule::where('caregiver_id',session('admin_id'))->orWhere('nurse_id',session('admin_id'))->with('get_client','get_tasks')->get();
+        return view('admin.dashboard',compact('requires','medics','languages','specializations','schedules'));
     }
 
     public function customer(Request $request) {

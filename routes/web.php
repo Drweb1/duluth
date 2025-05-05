@@ -88,6 +88,13 @@ Route::group(['middleware' => ['user_auth']], function () {
     Route::post('/schedule/add',[ScheduleController::class,'add'])->name('schedule.add');
     Route::get('/schedule/delete/{id}', [ScheduleController::class, 'delete'])->name('schedule.delete');
     Route::match(['get','post'],'schedule/edit/{id}',[ScheduleController::class,'edit'])->name('schedule.edit');
+    Route::post('/schedules/get', [ScheduleController::class, 'getSchedules'])->name('schedules.get');
+    Route::get('/calendar-header', [ScheduleController::class, 'calendarHeader'])->name('calendar.header');
+    Route::get('/calendar-data', [ScheduleController::class, 'calendarData'])->name('calendar.data');
+    Route::post('add_task',[ScheduleController::class,'add_task'])->name('add_task');
+    Route::get('schedule_tasks/{id}',[ScheduleController::class,'schedule_tasks'])->name('schedule.tasks');
+    Route::post('update_task',[ScheduleController::class,'update_status'])->name('update_status');
+    Route::post('add_remarks',[ScheduleController::class,'add_remarks_to_schedule'])->name('add_remarks_to_schedule');
 });
 
 // Route::middleware('auth')->group(function () {

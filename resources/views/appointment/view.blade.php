@@ -3,7 +3,7 @@
 Orders
 @endsection
 @section('style')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets2/css/date-picker.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <style>
     /* Pill Toggle Styles */
@@ -41,13 +41,107 @@ Orders
     .pill-toggle:not(.active):hover {
         background: #e9ecef;
     }
+
+    .calendar-header {
+        margin-bottom: 15px;
+    }
+
+    .calendar-header th {
+        padding: 10px;
+    }
+
+    .calendar-body {
+        border: 1px solid #dee2e6;
+    }
+
+    .calendar-row {
+        display: flex;
+        min-height: 80px;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .calendar-time {
+        width: 80px;
+        padding: 10px;
+        background-color: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+    }
+
+    .calendar-days {
+        display: flex;
+        flex: 1;
+    }
+
+    .calendar-day {
+        flex: 1;
+        padding: 5px;
+        border-right: 1px solid #dee2e6;
+        position: relative;
+    }
+
+    .calendar-day.today {
+        background-color: #f8f9fa;
+    }
+
+    .appointment {
+        background-color: #e9f7fe;
+        border: 1px solid #bee1fa;
+        border-radius: 4px;
+        padding: 2px;
+        margin-bottom: 5px;
+    }
+
+    .appointment-time {
+        font-size: 12px;
+        color: #666;
+    }
+
+    .appointment-staff {
+        font-weight: bold;
+        margin: 3px 0;
+    }
+
+    .appointment-client {
+        font-size: 13px;
+    }
+
+    .appointment-actions {
+        margin-top: 5px;
+        display: flex;
+        gap: 5px;
+    }
+
+    .appointment-actions .btn {
+        padding: 0.15rem 0.3rem;
+        font-size: 12px;
+    }
+
+    .view-toggle.active {
+        background-color: #0d6efd;
+        color: white;
+    }
+    .select2-container--default .select2-selection--multiple {
+        min-height: 40px !important;
+    padding: 4px !important;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__rendered {
+        min-height: 45px;
+        padding-bottom: 5px;
+    }
+
+    .select2-container--default .select2-search--inline .select2-search__field {
+        margin-top: 10px;
+    }
 </style>
 
 
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @endsection
 @section('content')
 <div class="page-body-wrapper">
-    <!-- Right sidebar Ends-->
     <div class="page-body">
         <div class="container-fluid">
             <div class="page-header">
@@ -61,7 +155,10 @@ Orders
                             data-bs-target="#setScheduleModal">
                             Set Schedule
                         </button>
-
+                        <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal"
+                        data-bs-target="#addTaskModal" style="margin-left: 10px;">
+                        Add Task
+                    </button>
                     </div>
                 </div>
             </div>
@@ -79,6 +176,10 @@ Orders
             </div>
             @endif
             <div class="row">
+                @php
+                use Carbon\Carbon;
+                @endphp
+
                 {{-- <div class="col-md-6" style="overflow: auto">
                     <div class="cal-date-widget card-body p-0">
                         <div class="row">
@@ -91,10 +192,12 @@ Orders
                                     </div>
                                     <ul class="task-list">
                                         @foreach($schedules as $schedule)
-                                            <li>
-                                                <span>{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }} </span>
-                                                {{ $schedule->get_client->name }} - {{ $schedule->get_nurse->name ?? $schedule->get_caregiver->name }}
-                                            </li>
+                                        <li>
+                                            <span>{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}
+                                            </span>
+                                            {{ $schedule->get_client->name }} - {{ $schedule->get_nurse->name ??
+                                            $schedule->get_caregiver->name }}
+                                        </li>
                                         @endforeach
                                     </ul>
                                 </div>
@@ -107,36 +210,7 @@ Orders
                         </div>
                     </div>
                 </div> --}}
-                    <div class="col-md-3 mb-4">
-                      <div class="card shadow-sm h-100">
-                        <div class="card-body">
-
-                          <!-- Client Info -->
-                          <div class="d-flex align-items-center mb-3">
-                            <img src="client-profile.jpg" alt="Client Profile" class="rounded-circle me-3" width="60" height="60">
-                            <div>
-                              <h5 class="card-title mb-0">John Doe</h5>
-                              <small class="text-muted">
-                                Visit Status: <span class="badge bg-success">Completed</span>
-                              </small>
-                            </div>
-                          </div>
-
-                          <hr>
-
-                          <!-- Caregiver/Nurse Info -->
-                          <div class="d-flex align-items-center">
-                            <img src="caregiver-profile.jpg" alt="Caregiver Profile" class="rounded-circle me-3" width="50" height="50">
-                            <div>
-                              <h6 class="mb-0">Nurse Mary Smith</h6>
-                              <small class="text-muted">Role: Nurse</small>
-                            </div>
-                          </div>
-
-                        </div>
-                      </div>
-                    </div>
-                <div class="col-md-9">
+                {{-- <div class="col-md-9">
                     <table class="table">
                         <thead>
                             <tr>
@@ -149,27 +223,163 @@ Orders
                         </thead>
                         <tbody>
                             @foreach($schedules as $schedule)
-                                <tr>
-                                    <td>{{ $schedule->id }}</td>
-                                    <td>{{ $schedule->get_client->name }}</td>
-                                    <td>{{Str::ucfirst( $schedule->staff_type) }}  ({{ $schedule->get_nurse->name ?? $schedule->get_caregiver->name }})</td>
-                                    <td>{{ \Carbon\Carbon::parse($schedule->date)->format('d M Y') }} {{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}</td>
-                                    <td>
-                                        <a href="{{ route('schedule.edit', $schedule->id) }}"
-                                            class="btn btn-sm btn-primary me-1" title="Edit">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
+                            <tr>
+                                <td>{{ $schedule->id }}</td>
+                                <td>{{ $schedule->get_client->name }}</td>
+                                <td>{{Str::ucfirst( $schedule->staff_type) }} ({{ $schedule->get_nurse->name ??
+                                    $schedule->get_caregiver->name }})</td>
+                                <td>{{ \Carbon\Carbon::parse($schedule->date)->format('d M Y') }} {{
+                                    \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}</td>
+                                <td>
+                                    <a href="{{ route('schedule.edit', $schedule->id) }}"
+                                        class="btn btn-sm btn-primary me-1" title="Edit">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
 
-                                        <a href="{{ route('schedule.delete', $schedule->id) }}" class="btn btn-sm btn-danger me-1" title="Delete" onclick="return confirm('Are you sure you want to delete this Schedule?')">
-                                            <i class="fa fa-trash"></i>
-                                        </a>
+                                    <a href="{{ route('schedule.delete', $schedule->id) }}"
+                                        class="btn btn-sm btn-danger me-1" title="Delete"
+                                        onclick="return confirm('Are you sure you want to delete this Schedule?')">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
 
-                                    </td>
-                                </tr>
+                                </td>
+                            </tr>
                             @endforeach
                         </tbody>
                     </table>
+                </div> --}}
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <button class="btn-outline-secondary me-2" id="prev-period">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <h4 class="mb-0" id="current-period">{{ $startDate->format('F j') }} - {{
+                                    $endDate->format('F j, Y') }}</h4>
+                                <button class="btn-outline-secondary ms-2" id="next-period">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-outline-secondary view-toggle active"
+                                    data-view="week">Week</button>
+                                <button class="btn btn-sm btn-outline-secondary view-toggle"
+                                    data-view="month">Month</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="calendar-header">
+                                <table class="table table-bordered text-center">
+                                    <thead>
+                                        <tr>
+                                            @php
+                                            $days = [];
+                                            $currentDay = $startDate->copy();
+                                            while ($currentDay <= $endDate) { $days[]=$currentDay->copy();
+                                                $currentDay->addDay();
+                                                }
+                                                @endphp
+                                                @foreach($days as $day)
+                                                <th class="{{ $day->isToday() ? 'bg-light' : '' }}">
+                                                    <div>{{ $day->format('D') }}</div>
+                                                    <div>{{ $day->format('M j') }}</div>
+                                                </th>
+                                                @endforeach
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+
+                            <!-- Calendar Time Slots -->
+                            <div class="calendar-body">
+                                @php
+                             $startTime = Carbon::createFromTime(0, 0, 0);
+                                $endTime = Carbon::createFromTime(23, 0, 0);
+
+                                $timeSlots = [];
+                                while ($startTime <= $endTime) { $timeSlots[]=$startTime->copy();
+                                    $startTime->addHour();
+                                    }
+                                    @endphp
+
+                                    @foreach($timeSlots as $time)
+                                    <div class="calendar-row">
+                                        <div class="calendar-time">{{ $time->format('h A') }}</div>
+                                        <div class="calendar-days">
+                                            @foreach($days as $day)
+                                            <div class="calendar-day {{ $day->isToday() ? 'today' : '' }}">
+                                                @php
+                                                $appointments = $schedules->filter(function($schedule) use ($day, $time)
+                                                {
+                                                $scheduleDate = Carbon::parse($schedule->date);
+                                                $scheduleStart = Carbon::parse($schedule->start_time);
+                                                $scheduleEnd = Carbon::parse($schedule->end_time);
+                                                return $scheduleDate->isSameDay($day) &&
+                                                $scheduleStart->format('H') == $time->format('H');
+                                                });
+                                                @endphp
+
+                                                @if($appointments->count() > 0)
+                                                <div class="appointments-container">
+                                                    @foreach($appointments as $appointment)
+                                                    <div class="appointment">
+                                                        <div class="appointment-time">
+                                                            {{
+                                                            \Carbon\Carbon::parse($appointment->start_time)->format('h:i
+                                                            A') }} -
+                                                            {{
+                                                            \Carbon\Carbon::parse($appointment->end_time)->format('h:i
+                                                            A') }}
+                                                        </div>
+                                                        <div class="appointment-staff"
+                                                            style="display: flex; align-items: center; gap: 4px;">
+                                                            <strong style="display: inline;">
+                                                                {{ $appointment->get_nurse->name ??
+                                                                $appointment->get_caregiver->name }}
+                                                            </strong>
+                                                            <span style="display: inline;">({{ $appointment->staff_type
+                                                                }})</span>
+                                                        </div>
+
+                                                        <div class="appointment-client">
+                                                            {{ $appointment->get_client->name }}
+                                                        </div>
+                                                        <div class="appointment-actions">
+                                                            <a href="{{ route('schedule.edit', $appointment->id) }}"
+                                                                class="btn btn-xs btn-primary">
+                                                                <i class="fa fa-edit"></i>
+                                                            </a>
+                                                            <a href="{{ route('schedule.delete', $appointment->id) }}"
+                                                                class="btn btn-xs btn-danger"
+                                                                onclick="return confirm('Are you sure?')">
+                                                                <i class="fa fa-trash"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    @endforeach
+                                                </div>
+                                                @endif
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    @endforeach
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+
+
+                @php
+                function calculateHeight($appointment) {
+                $start = Carbon::parse($appointment->start_time);
+                $end = Carbon::parse($appointment->end_time);
+                $duration = $end->diffInMinutes($start);
+                return max(50, $duration / 60 * 50); // 50px per hour
+                }
+                @endphp
             </div>
 
 
@@ -297,7 +507,20 @@ Orders
                                 <input type="time" class="form-control" name="end_time" value="{{ old('end_time') }}">
                                 @error('end_time') <small class="text-danger">{{ $message }}</small> @enderror
                             </div>
-                            <div class="mb-3 col-md-12 form-group">
+                            <div class="col-md-6 form-group mt-3">
+                                <label class="form-label">Select Tasks <x-required_field /></label>
+                                <select name="tasks[]" class="form-control select2-multiple" multiple="multiple" style="min-height: 45px;">
+                                    @foreach($tasks as $task)
+                                        <option value="{{ $task->id }}" {{ (collect(old('tasks'))->contains($task->id)) ? 'selected' : '' }}>
+                                            {{ $task->title }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('tasks') <small class="text-danger">{{ $message }}</small> @enderror
+                            </div>
+
+
+                            <div class="mb-3 col-md-6 form-group">
                                 <label class="form-label">Notes</label>
                                 <textarea class="form-control" name="notes" rows="3"
                                     placeholder="Add any special instructions or notes...">{{ old('notes') }}</textarea>
@@ -339,8 +562,39 @@ Orders
 
 
     </div>
+    <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
 
-</div>
+            <div class="modal-header">
+              <h5 class="modal-title" id="addTaskModalLabel">Add Task</h5>
+            </div>
+
+            <div class="modal-body">
+              <form action="{{ route('add_task') }}" class="form theme-form" method="POST">
+                @csrf
+                <div class="mb-3 form-group">
+                  <label for="taskName" class="form-label">Title <x-required_field /></label>
+                  <input type="text" class="form-control" id="title" name="title">
+                  @error('title') <small class="text-danger">{{ $message }}</small> @enderror
+                </div>
+                <div class="mb-3 form-group">
+                  <label for="taskDescription" class="form-label">Description</label>
+                  <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                  @error('description') <small class="text-danger">{{ $message }}</small> @enderror
+                </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save Task</button>
+            </div>
+
+            </form>
+
+          </div>
+        </div>
+      </div>
 
 
 @endsection
@@ -348,6 +602,17 @@ Orders
 <script src="{{ asset('assets2/js/datepicker/date-picker/datepicker.js') }}"></script>
 <script src="{{ asset('assets2/js/datepicker/date-picker/datepicker.en.js') }}"></script>
 <script src="{{ asset('assets2/js/datepicker/date-picker/datepicker.custom.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.select2-multiple').select2({
+            placeholder: "Select tasks",
+            allowClear: true,
+            width: '100%',
+            closeOnSelect: false
+        });
+    });
+    </script>
 <script>
     document.querySelectorAll('.pill-toggle').forEach(button => {
       button.addEventListener('click', function() {
@@ -406,6 +671,102 @@ Orders
         });
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let currentStartDate = new Date('{{ $startDate->format('Y-m-d') }}');
+        let currentEndDate = new Date('{{ $endDate->format('Y-m-d') }}');
+        let currentView = 'week';
 
+        // Initialize the calendar
+        updateNavigationButtons();
+        document.getElementById('prev-period').addEventListener('click', function() {
+            navigate(-1);
+        });
+
+        document.getElementById('next-period').addEventListener('click', function() {
+            navigate(1);
+        });
+
+        // View toggle buttons
+        document.querySelectorAll('.view-toggle').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.view-toggle').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+                currentView = this.dataset.view;
+
+                // Reset to current week/month when changing views
+                const today = new Date();
+                if (currentView === 'week') {
+                    currentStartDate = new Date(today);
+                    currentStartDate.setDate(today.getDate() - today.getDay());
+                    currentEndDate = new Date(currentStartDate);
+                    currentEndDate.setDate(currentStartDate.getDate() + 6);
+                } else {
+                    currentStartDate = new Date(today.getFullYear(), today.getMonth(), 1);
+                    currentEndDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                }
+
+                updateCalendar();
+            });
+        });
+
+        function navigate(direction) {
+            if (currentView === 'week') {
+                currentStartDate.setDate(currentStartDate.getDate() + (direction * 7));
+                currentEndDate.setDate(currentEndDate.getDate() + (direction * 7));
+            } else if (currentView === 'month') {
+                currentStartDate.setMonth(currentStartDate.getMonth() + direction);
+                currentEndDate = new Date(
+                    currentStartDate.getFullYear(),
+                    currentStartDate.getMonth() + 1,
+                    0
+                );
+            }
+            updateCalendar();
+        }
+
+        function updateCalendar() {
+            updateNavigationButtons();
+
+            const params = new URLSearchParams({
+                start_date: formatDateForRequest(currentStartDate),
+                end_date: formatDateForRequest(currentEndDate),
+                view: currentView
+            });
+
+            window.location.href = `{{ route('schdules') }}?${params.toString()}`;
+        }
+
+        function updateNavigationButtons() {
+            if (currentView === 'week') {
+                document.getElementById('current-period').textContent =
+                    `${formatDate(currentStartDate)} - ${formatDate(currentEndDate)}`;
+            } else {
+                const monthName = currentStartDate.toLocaleString('default', { month: 'long' });
+                document.getElementById('current-period').textContent =
+                    `${monthName} ${currentStartDate.getFullYear()}`;
+            }
+        }
+        function formatDate(date) {
+            const options = { month: 'short', day: 'numeric' };
+            const startStr = date.toLocaleDateString('en-US', options);
+
+            if (currentView === 'month') {
+                const year = date.getFullYear();
+                return `${startStr} - ${date.getDate()}, ${year}`;
+            }
+            return startStr;
+        }
+
+        function formatDateForRequest(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+    });
+</script>
 
 @endsection

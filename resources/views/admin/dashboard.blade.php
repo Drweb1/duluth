@@ -21,83 +21,110 @@ Dashboard
         align-items: center;
         flex-wrap: wrap;
     }
-.custom-file-hidden {
-    position: absolute;
-    left: -9999px;
-    opacity: 0;
-    height: 1px;
-    width: 1px;
-    pointer-events: none;
-}
+
+    .custom-file-hidden {
+        position: absolute;
+        left: -9999px;
+        opacity: 0;
+        height: 1px;
+        width: 1px;
+        pointer-events: none;
+    }
+
     .invalid-feedback {
         color: red;
         font-size: 0.875em;
         margin-top: 0.25rem;
     }
+
     .document-checklist {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 1rem;
-}
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 1rem;
+    }
 
-.doc-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f9f9f9;
-    padding: 12px 16px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-}
+    .doc-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f9f9f9;
+        padding: 12px 16px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
 
-.doc-info {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-}
+    .doc-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+    }
 
-.doc-upload {
-    display: flex;
-    align-items: center;
-}
+    .doc-upload {
+        display: flex;
+        align-items: center;
+    }
 
-.upload-btn {
-    padding: 6px 12px;
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    transition: background-color 0.2s ease-in-out;
-}
+    .upload-btn {
+        padding: 6px 12px;
+        background-color: #ffffff;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: background-color 0.2s ease-in-out;
+    }
 
-.upload-btn:hover {
-    background-color: #f1f1f1;
-}
+    .upload-btn:hover {
+        background-color: #f1f1f1;
+    }
 
-.hidden-input {
-    display: none;
-}
+    .hidden-input {
+        display: none;
+    }
 
-    </style>
+    .schedule-card {
+        transition: all 0.3s ease;
+        height: 100%;
+    }
 
+    .schedule-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .schedule-icon {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 123, 255, 0.1);
+        border-radius: 50%;
+    }
+
+    .schedule-details {
+        border-left: 3px solid #eee;
+        padding-left: 15px;
+        margin-left: 8px;
+    }
+</style>
 <div class="page-body">
     @if(session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
     </div>
-@endif
+    @endif
 
-@if(session('error'))
+    @if(session('error'))
     <div class="alert alert-danger">
         {{ session('error') }}
     </div>
-@endif
+    @endif
 
     <div class="container-fluid">
         <div class="page-header">
@@ -112,7 +139,7 @@ Dashboard
                     <button class="btn btn-primary" data-toggle="modal" data-target="#addClientModal"><i
                             class="fas fa-plus"></i>
                         Client</button>
-                        <button class="btn btn-success" data-toggle="modal" data-target="#addcare_giver_Modal"><i
+                    <button class="btn btn-success" data-toggle="modal" data-target="#addcare_giver_Modal"><i
                             class="fas fa-plus"></i>
                         Caregiver</button>
                 </div>
@@ -388,6 +415,88 @@ Dashboard
 
 
         </div>
+        <div class="row">
+            @foreach ($schedules as $key => $schedule)
+            <div class="col-xl-3 col-md-6 box-col-12">
+                <div class="card schedule-card">
+                    <div class="card-header no-border pb-1">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="mb-1">Schedule #{{ $loop->iteration }}</h5>
+                                <h6 class="text-primary mb-0">
+                                    <i class="fa fa-user-circle me-1"></i>
+                                    {{ $schedule->get_client->name ?? 'No Client' }}
+                                </h6>
+                            </div>
+                            <div class="text-end">
+                                <span
+                                    class="badge {{ $schedule->status == 1 ? 'badge-success' : 'badge-warning' }} mb-1">
+                                    {{ $schedule->status == 1 ? 'Active' : 'Pending' }}
+                                </span>
+                                <p class="small text-muted mb-0">
+                                    {{ \Carbon\Carbon::parse($schedule->date)->diffForHumans() }}
+                                </p>
+                            </div>
+
+                        <ul class="creative-dots">
+                            <li class="bg-primary big-dot"></li>
+                            <li class="bg-secondary semi-big-dot"></li>
+                            <li class="bg-warning medium-dot"></li>
+                            <li class="bg-info semi-medium-dot"></li>
+                            <li class="bg-secondary semi-small-dot"></li>
+                            <li class="bg-primary small-dot"></li>
+                        </ul>
+                        </div>
+                    </div>
+
+                    <div class="card-body pt-2 pb-2">
+                        <div class="schedule-details">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="schedule-icon me-2">
+                                    <i class="fa fa-calendar-alt text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="mb-0 fw-bold">
+                                        {{ \Carbon\Carbon::parse($schedule->date)->format('l, F j, Y') }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="schedule-icon me-2">
+                                    <i class="fa fa-clock text-secondary"></i>
+                                </div>
+                                <div>
+                                    <p class="mb-0">
+                                        {{ \Carbon\Carbon::parse($schedule->start_time)->format('g:i A') }} -
+                                        {{ \Carbon\Carbon::parse($schedule->end_time)->format('g:i A') }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="schedule-meta">
+                                <span class="badge bg-light text-dark me-1">
+                                    <i class="fa fa-tasks me-1"></i>
+                                    {{ $schedule->get_tasks->count() ?? 0 }} Tasks
+                                </span>
+                            </div>
+                            <a href="{{ route('schedule.tasks', $schedule->id) }}" class="btn btn-primary btn-sm btn-shadow">
+                                <i class="fa fa-eye me-1"></i> View Tasks
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if(($key + 1) % 4 == 0)
+        </div>
+        <div class="row">
+            @endif
+            @endforeach
+        </div>
+
+
     </div>
     <div class="modal fade" id="addClientModal" tabindex="-1" role="dialog" aria-labelledby="addClientModalLabel"
         aria-hidden="true">
@@ -412,14 +521,14 @@ Dashboard
                                 </div>
                                 <div class="border-top flex-fill step-line"></div>
                                 <div class="text-center flex-fill">
-                                    <div class="rounded-circle bg-secondary text-white mx-auto mb-1" id="step2-indicator"
-                                        style="width:30px;height:30px;line-height:30px;">2</div>
+                                    <div class="rounded-circle bg-secondary text-white mx-auto mb-1"
+                                        id="step2-indicator" style="width:30px;height:30px;line-height:30px;">2</div>
                                     <small>Care Details</small>
                                 </div>
                                 <div class="border-top flex-fill step-line" style="border-color: #706d6d;"></div>
                                 <div class="text-center flex-fill">
-                                    <div class="rounded-circle bg-secondary text-white mx-auto mb-1" id="step3-indicator"
-                                        style="width:30px;height:30px;line-height:30px;">3</div>
+                                    <div class="rounded-circle bg-secondary text-white mx-auto mb-1"
+                                        id="step3-indicator" style="width:30px;height:30px;line-height:30px;">3</div>
                                     <small>Insurance</small>
                                 </div>
                             </div>
@@ -428,19 +537,27 @@ Dashboard
                                 <h4>Personal Information</h4>
                                 <div class="row">
                                     <div class="form-group col-md-6">
-                                        <label>Name<x-required_field/></label>
+                                        <label>Name
+                                            <x-required_field />
+                                        </label>
                                         <input type="text" name="name" class="form-control" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Email<x-required_field/></label>
+                                        <label>Email
+                                            <x-required_field />
+                                        </label>
                                         <input type="email" name="email" class="form-control" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Phone<x-required_field/></label>
+                                        <label>Phone
+                                            <x-required_field />
+                                        </label>
                                         <input type="text" name="phone" class="form-control" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Date of Birth<x-required_field/></label>
+                                        <label>Date of Birth
+                                            <x-required_field />
+                                        </label>
                                         <input type="date" name="dob" class="form-control" required>
                                     </div>
                                     <div class="form-group col-12">
@@ -452,15 +569,21 @@ Dashboard
                                 <h4 class="mt-4">Emergency Contact</h4>
                                 <div class="row">
                                     <div class="form-group col-md-6">
-                                        <label>Contact Name<x-required_field/></label>
+                                        <label>Contact Name
+                                            <x-required_field />
+                                        </label>
                                         <input type="text" name="emergency_contact_name" class="form-control" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Phone<x-required_field/></label>
+                                        <label>Phone
+                                            <x-required_field />
+                                        </label>
                                         <input type="text" name="emergency_phone" class="form-control" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Relationship<x-required_field/></label>
+                                        <label>Relationship
+                                            <x-required_field />
+                                        </label>
                                         <input type="text" name="emergency_relationship" class="form-control" required>
                                     </div>
                                     <div class="form-group col-md-6">
@@ -478,7 +601,9 @@ Dashboard
                                 <h4>Care Requirements</h4>
                                 <div class="row">
                                     <div class="form-group col-md-6">
-                                        <label>Care Type<x-required_field/></label>
+                                        <label>Care Type
+                                            <x-required_field />
+                                        </label>
                                         <select name="care_type" class="form-control" required>
                                             <option value="">-- Select Care Type --</option>
                                             <option value="Daily Care">Daily Care</option>
@@ -489,11 +614,15 @@ Dashboard
                                     </div>
 
                                     <div class="form-group col-md-6">
-                                        <label>Frequency<x-required_field/></label>
+                                        <label>Frequency
+                                            <x-required_field />
+                                        </label>
                                         <input type="text" name="frequency" class="form-control" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Start Date<x-required_field/></label>
+                                        <label>Start Date
+                                            <x-required_field />
+                                        </label>
                                         <input type="date" name="start_date" class="form-control" required>
                                     </div>
                                 </div>
@@ -503,8 +632,9 @@ Dashboard
                                     @foreach ($requires as $requirement)
                                     <div class="col-md-6 mb-2">
                                         <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="medical_requirements[]"
-                                                value="{{ $requirement->id }}" id="require_{{ $requirement->id }}">
+                                            <input type="checkbox" class="form-check-input"
+                                                name="medical_requirements[]" value="{{ $requirement->id }}"
+                                                id="require_{{ $requirement->id }}">
                                             <label class="form-check-label" for="require_{{ $requirement->id }}">
                                                 {{ $requirement->name }}
                                             </label>
@@ -542,11 +672,15 @@ Dashboard
                                 <h3>Insurance Information</h3>
                                 <div class="row">
                                     <div class="form-group col-md-6">
-                                        <label>Insurance Provider<x-required_field/></label>
+                                        <label>Insurance Provider
+                                            <x-required_field />
+                                        </label>
                                         <input type="text" name="insurance_provider" class="form-control" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Policy Number<x-required_field/></label>
+                                        <label>Policy Number
+                                            <x-required_field />
+                                        </label>
                                         <input type="text" name="policy_number" class="form-control" required>
                                     </div>
                                     <div class="form-group col-md-6">
@@ -560,7 +694,8 @@ Dashboard
                                     <div class="form-group col-md-12">
                                         <label class="d-block mb-2">Insurance Card Upload</label>
                                         <div class="custom-file-upload">
-                                            <input type="file" name="insurance_card" id="insurance_card" class="custom-file-hidden">
+                                            <input type="file" name="insurance_card" id="insurance_card"
+                                                class="custom-file-hidden">
                                             <label for="insurance_card"
                                                 class="btn btn-outline-primary rounded-pill px-4 py-2">
                                                 <i class="fas fa-upload"></i> Choose File
@@ -587,239 +722,277 @@ Dashboard
         </div>
     </div>
     <div class="modal fade" id="addcare_giver_Modal" tabindex="-1" role="dialog" aria-labelledby="addcare_giver_Modal"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <form action="{{ route('add-caregiver') }}" class="form theme-form" method="POST" id="caregiver_form" novalidate enctype="multipart/form-data">
-            @csrf
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add New Caregiver</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
-                </div>
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <form action="{{ route('add-caregiver') }}" class="form theme-form" method="POST" id="caregiver_form"
+                novalidate enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add New Caregiver</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
 
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="d-flex justify-content-between align-items-center mb-4 px-3">
-                            <div class="text-center flex-fill">
-                                <div class="rounded-circle bg-primary text-white mx-auto mb-1"
-                                    style="width:30px;height:30px;line-height:30px;">1</div>
-                                <small>Personal Info</small>
-                            </div>
-                            <div class="border-top flex-fill step-line"></div>
-                            <div class="text-center flex-fill">
-                                <div class="rounded-circle bg-secondary text-white mx-auto mb-1" id="new-modal-step2-indicator"
-                                    style="width:30px;height:30px;line-height:30px;">2</div>
-                                <small>Qualifications</small>
-                            </div>
-                            <div class="border-top flex-fill step-line" style="border-color: #706d6d;"></div>
-                            <div class="text-center flex-fill">
-                                <div class="rounded-circle bg-secondary text-white mx-auto mb-1" id="new-modal-step3-indicator"
-                                    style="width:30px;height:30px;line-height:30px;">3</div>
-                                <small>Documents</small>
-                            </div>
-                        </div>
-
-                        <div class="step step-1" id="new-modal-step1">
-                            <h4>Personal Information</h4>
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label>Name<x-required_field/></label>
-                                    <input type="text" name="c_name" class="form-control" required>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="d-flex justify-content-between align-items-center mb-4 px-3">
+                                <div class="text-center flex-fill">
+                                    <div class="rounded-circle bg-primary text-white mx-auto mb-1"
+                                        style="width:30px;height:30px;line-height:30px;">1</div>
+                                    <small>Personal Info</small>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label>Email<x-required_field/></label>
-                                    <input type="email" name="c_email" class="form-control" required>
+                                <div class="border-top flex-fill step-line"></div>
+                                <div class="text-center flex-fill">
+                                    <div class="rounded-circle bg-secondary text-white mx-auto mb-1"
+                                        id="new-modal-step2-indicator" style="width:30px;height:30px;line-height:30px;">
+                                        2</div>
+                                    <small>Qualifications</small>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label>Phone<x-required_field/></label>
-                                    <input type="text" name="c_phone" class="form-control" required>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label>Date of Birth<x-required_field/></label>
-                                    <input type="date" name="c_dob" class="form-control" required>
-                                </div>
-                                <div class="form-group col-12">
-                                    <label>Address</label>
-                                    <input type="text" name="c_address" class="form-control">
-                                </div>
-                            </div>
-                            <h4 class="mt-4">Emergency Contact</h4>
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label>Contact Name <x-required_field/></label>
-                                    <input type="text" name="c_emergency_contact_name" class="form-control" required>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label>Phone <x-required_field/></label>
-                                    <input type="text" name="c_emergency_phone" class="form-control" required>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label>Relationship <x-required_field/></label>
-                                    <input type="text" name="c_emergency_relationship" class="form-control" required>
-                                </div>
-                            </div>
-                            <button type="button" class="btn btn-primary float-right next-btn">Next<i
-                                    class="fas fa-arrow-right"></i>
-                            </button>
-                        </div>
-                        <div class="step step-2 d-none" id="new-modal-step2">
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label for="certification">Certification<x-required_field/></label>
-                                    <select name="certification" id="certification" class="form-control" required>
-                                        <option value="">Select Certification</option>
-                                        <option value="HHA">HHA</option>
-                                        <option value="LPN">LPN</option>
-                                        <option value="RN">RN</option>
-                                        <option value="CNA">CNA</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label for="experience">Experience (in years)<x-required_field/></label>
-                                    <input type="number" name="experience" id="experience" class="form-control" min="0" required>
+                                <div class="border-top flex-fill step-line" style="border-color: #706d6d;"></div>
+                                <div class="text-center flex-fill">
+                                    <div class="rounded-circle bg-secondary text-white mx-auto mb-1"
+                                        id="new-modal-step3-indicator" style="width:30px;height:30px;line-height:30px;">
+                                        3</div>
+                                    <small>Documents</small>
                                 </div>
                             </div>
 
-                            <h4 class="mt-4">Availability</h4>
-                            <div class="row">
-                                @foreach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as $day)
+                            <div class="step step-1" id="new-modal-step1">
+                                <h4>Personal Information</h4>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label>Name
+                                            <x-required_field />
+                                        </label>
+                                        <input type="text" name="c_name" class="form-control" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Email
+                                            <x-required_field />
+                                        </label>
+                                        <input type="email" name="c_email" class="form-control" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Phone
+                                            <x-required_field />
+                                        </label>
+                                        <input type="text" name="c_phone" class="form-control" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Date of Birth
+                                            <x-required_field />
+                                        </label>
+                                        <input type="date" name="c_dob" class="form-control" required>
+                                    </div>
+                                    <div class="form-group col-12">
+                                        <label>Address</label>
+                                        <input type="text" name="c_address" class="form-control">
+                                    </div>
+                                </div>
+                                <h4 class="mt-4">Emergency Contact</h4>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label>Contact Name
+                                            <x-required_field />
+                                        </label>
+                                        <input type="text" name="c_emergency_contact_name" class="form-control"
+                                            required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Phone
+                                            <x-required_field />
+                                        </label>
+                                        <input type="text" name="c_emergency_phone" class="form-control" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Relationship
+                                            <x-required_field />
+                                        </label>
+                                        <input type="text" name="c_emergency_relationship" class="form-control"
+                                            required>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary float-right next-btn">Next<i
+                                        class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                            <div class="step step-2 d-none" id="new-modal-step2">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label for="certification">Certification
+                                            <x-required_field />
+                                        </label>
+                                        <select name="certification" id="certification" class="form-control" required>
+                                            <option value="">Select Certification</option>
+                                            <option value="HHA">HHA</option>
+                                            <option value="LPN">LPN</option>
+                                            <option value="RN">RN</option>
+                                            <option value="CNA">CNA</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="experience">Experience (in years)
+                                            <x-required_field />
+                                        </label>
+                                        <input type="number" name="experience" id="experience" class="form-control"
+                                            min="0" required>
+                                    </div>
+                                </div>
+
+                                <h4 class="mt-4">Availability</h4>
+                                <div class="row">
+                                    @foreach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
+                                    'Sunday'] as $day)
                                     <div class="col-sm-6 col-md-4 mb-2">
                                         <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="availabilities[]" value="{{ $day }}" id="avail_{{ $day }}">
+                                            <input type="checkbox" class="form-check-input" name="availabilities[]"
+                                                value="{{ $day }}" id="avail_{{ $day }}">
                                             <label class="form-check-label" for="avail_{{ $day }}">{{ $day }}</label>
                                         </div>
                                     </div>
-                                @endforeach
-                            </div>
+                                    @endforeach
+                                </div>
 
-                            <h4 class="mt-4">Languages</h4>
-                            <div class="row">
-                                @foreach($languages as $lang)
+                                <h4 class="mt-4">Languages</h4>
+                                <div class="row">
+                                    @foreach($languages as $lang)
                                     <div class="col-sm-6 col-md-4 mb-2">
                                         <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="languages[]" value="{{ $lang->id }}" id="lang_{{ $lang }}">
-                                            <label class="form-check-label" for="lang_{{ $lang }}">{{ $lang->name}}</label>
+                                            <input type="checkbox" class="form-check-input" name="languages[]"
+                                                value="{{ $lang->id }}" id="lang_{{ $lang }}">
+                                            <label class="form-check-label" for="lang_{{ $lang }}">{{
+                                                $lang->name}}</label>
                                         </div>
                                     </div>
-                                @endforeach
-                            </div>
+                                    @endforeach
+                                </div>
 
-                            <h4 class="mt-4">Specializations</h4>
-                            <div class="row">
-                                @foreach($specializations as $specialization)
+                                <h4 class="mt-4">Specializations</h4>
+                                <div class="row">
+                                    @foreach($specializations as $specialization)
                                     <div class="col-sm-6 col-md-4 mb-2">
                                         <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="specializations[]" value="{{ $specialization->id }}" id="spec_{{ $specialization->id }}">
-                                            <label class="form-check-label" for="spec_{{ $specialization->id }}">{{ $specialization->name }}</label>
+                                            <input type="checkbox" class="form-check-input" name="specializations[]"
+                                                value="{{ $specialization->id }}" id="spec_{{ $specialization->id }}">
+                                            <label class="form-check-label" for="spec_{{ $specialization->id }}">{{
+                                                $specialization->name }}</label>
                                         </div>
                                     </div>
-                                @endforeach
+                                    @endforeach
+                                </div>
+
+                                <div class="mt-4">
+                                    <button type="button" class="btn btn-secondary prev-btn">
+                                        <i class="fas fa-arrow-left"></i> Previous
+                                    </button>
+                                    <button type="button" class="btn btn-primary float-right next-btn">
+                                        Next <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
                             </div>
 
-                            <div class="mt-4">
+                            <div class="step step-3 d-none" id="new-modal-step3">
+                                <h4 class="mb-3">Document Verification</h4>
+                                <p>Please verify you have the following documents ready for submission:</p>
+
+                                <div class="document-checklist">
+                                    <div class="doc-row">
+                                        <div class="doc-info">
+                                            <label for="background_check" style="margin-bottom: 1px;">Background
+                                                Check</label>
+                                        </div>
+                                        <div class="doc-upload">
+                                            <label for="background_check_file" class="upload-btn">
+                                                <i class="fas fa-upload"></i> Upload
+                                            </label>
+                                            <input type="file" id="background_check_file" name="background_check_file"
+                                                class="hidden-input">
+                                        </div>
+                                    </div>
+                                    <div class="doc-row">
+                                        <div class="doc-info">
+                                            <label for="cpr_certification" style="margin-bottom: 1px;">CPR
+                                                Certification</label>
+                                        </div>
+                                        <div class="doc-upload">
+                                            <label for="cpr_certification_file" class="upload-btn">
+                                                <i class="fas fa-upload"></i> Upload
+                                            </label>
+                                            <input type="file" id="cpr_certification_file" name="cpr_certification_file"
+                                                class="hidden-input">
+                                        </div>
+                                    </div>
+                                    <div class="doc-row">
+                                        <div class="doc-info">
+                                            <label for="tb_test" style="margin-bottom: 1px;">TB Test Results</label>
+                                        </div>
+                                        <div class="doc-upload">
+                                            <label for="tb_test_file" class="upload-btn">
+                                                <i class="fas fa-upload"></i> Upload
+                                            </label>
+                                            <input type="file" id="tb_test_file" name="tb_test_file"
+                                                class="hidden-input">
+                                        </div>
+                                    </div>
+                                    <div class="doc-row">
+                                        <div class="doc-info">
+                                            <label for="drivers_license" style="margin-bottom: 1px;">Driver's
+                                                License</label>
+                                        </div>
+                                        <div class="doc-upload">
+                                            <label for="drivers_license_file" class="upload-btn">
+                                                <i class="fas fa-upload"></i> Upload
+                                            </label>
+                                            <input type="file" id="drivers_license_file" name="drivers_license_file"
+                                                class="hidden-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="start_date">Start Date</label>
+                                    <input type="date" name="start_date" id="start_date" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="preferred_schedule">Preferred Schedule</label>
+                                    <select name="preferred_schedule" id="preferred_schedule" class="form-control">
+                                        <option value="">-- Select --</option>
+                                        <option value="full_time">Full Time</option>
+                                        <option value="part_time">Part Time</option>
+                                        <option value="flexible">Flexible</option>
+                                    </select>
+                                </div>
+                                <div id="formErrorMsgContainer"></div>
                                 <button type="button" class="btn btn-secondary prev-btn">
                                     <i class="fas fa-arrow-left"></i> Previous
                                 </button>
-                                <button type="button" class="btn btn-primary float-right next-btn">
-                                    Next <i class="fas fa-arrow-right"></i>
+                                <button type="submit" class="btn btn-success float-right" id="submitBtn">
+                                    Save Caregiver
                                 </button>
                             </div>
+
+
                         </div>
-
-                        <div class="step step-3 d-none" id="new-modal-step3">
-                            <h4 class="mb-3">Document Verification</h4>
-                            <p>Please verify you have the following documents ready for submission:</p>
-
-                            <div class="document-checklist">
-                                <div class="doc-row">
-                                    <div class="doc-info">
-                                        <label for="background_check" style="margin-bottom: 1px;">Background Check</label>
-                                    </div>
-                                    <div class="doc-upload">
-                                        <label for="background_check_file" class="upload-btn">
-                                            <i class="fas fa-upload"></i> Upload
-                                        </label>
-                                        <input type="file" id="background_check_file" name="background_check_file" class="hidden-input">
-                                    </div>
-                                </div>
-                                <div class="doc-row">
-                                    <div class="doc-info">
-                                        <label for="cpr_certification" style="margin-bottom: 1px;">CPR Certification</label>
-                                    </div>
-                                    <div class="doc-upload">
-                                        <label for="cpr_certification_file" class="upload-btn">
-                                            <i class="fas fa-upload"></i> Upload
-                                        </label>
-                                        <input type="file" id="cpr_certification_file" name="cpr_certification_file" class="hidden-input">
-                                    </div>
-                                </div>
-                                <div class="doc-row">
-                                    <div class="doc-info">
-                                        <label for="tb_test" style="margin-bottom: 1px;">TB Test Results</label>
-                                    </div>
-                                    <div class="doc-upload">
-                                        <label for="tb_test_file" class="upload-btn">
-                                            <i class="fas fa-upload"></i> Upload
-                                        </label>
-                                        <input type="file" id="tb_test_file" name="tb_test_file" class="hidden-input">
-                                    </div>
-                                </div>
-                                <div class="doc-row">
-                                    <div class="doc-info">
-                                        <label for="drivers_license" style="margin-bottom: 1px;">Driver's License</label>
-                                    </div>
-                                    <div class="doc-upload">
-                                        <label for="drivers_license_file" class="upload-btn">
-                                            <i class="fas fa-upload"></i> Upload
-                                        </label>
-                                        <input type="file" id="drivers_license_file" name="drivers_license_file" class="hidden-input">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="start_date">Start Date</label>
-                                <input type="date" name="start_date" id="start_date" class="form-control">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="preferred_schedule">Preferred Schedule</label>
-                                <select name="preferred_schedule" id="preferred_schedule" class="form-control">
-                                    <option value="">-- Select --</option>
-                                    <option value="full_time">Full Time</option>
-                                    <option value="part_time">Part Time</option>
-                                    <option value="flexible">Flexible</option>
-                                </select>
-                            </div>
-                            <div id="formErrorMsgContainer"></div>
-                            <button type="button" class="btn btn-secondary prev-btn">
-                                <i class="fas fa-arrow-left"></i> Previous
-                            </button>
-                            <button type="submit" class="btn btn-success float-right" id="submitBtn">
-                                Save Caregiver
-                            </button>
-                        </div>
-
 
                     </div>
-
                 </div>
-            </div>
-        </form>
-    </div>
+            </form>
+        </div>
 
-</div>
-    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+    </div>
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="successModalLabel">Success</h5>
                 </div>
                 <div class="modal-body">
-                   <span class="text-success">Client saved successfully!</span>
+                    <span class="text-success">Client saved successfully!</span>
                 </div>
             </div>
         </div>
@@ -832,8 +1005,8 @@ Dashboard
             document.getElementById("file-chosen").textContent = fileName;
         });
     </script>
- <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
         const steps = document.querySelectorAll(".step");
         const nextButtons = document.querySelectorAll(".next-btn");
         const prevButtons = document.querySelectorAll(".prev-btn");
@@ -901,9 +1074,9 @@ Dashboard
 
         showStep(currentStep); // Initialize on page load
     });
- </script>
-<script>
-    $(document).ready(function () {
+    </script>
+    <script>
+        $(document).ready(function () {
         $('#client_form').on('submit', function (e) {
             e.preventDefault();
 
@@ -950,10 +1123,10 @@ Dashboard
             });
         });
     });
-</script>
+    </script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
         const steps = ['#new-modal-step1', '#new-modal-step2', '#new-modal-step3'];
         const indicators = ['#new-modal-step2-indicator', '#new-modal-step3-indicator'];
         const c_form= document.getElementById("caregiver_form");
@@ -1035,9 +1208,9 @@ Dashboard
 
         showStep(currentStep);
     });
-</script>
-<script>
-    $(document).ready(function () {
+    </script>
+    <script>
+        $(document).ready(function () {
         $('#caregiver_form').on('submit', function (e) {
             e.preventDefault();
 
@@ -1085,6 +1258,6 @@ Dashboard
             });
         });
     });
-</script>
+    </script>
 
     @endsection

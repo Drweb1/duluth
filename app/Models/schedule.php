@@ -22,5 +22,9 @@ class schedule extends Model
     {
         return $this->belongsTo(user::class, 'caregiver_id')->where('type','caregiver');
     }
+    public function get_tasks()
+    {
+        return $this->belongsToMany(task::class, 'schedule_tasks', 'schedule_id', 'task_id');
+    }
 
 }

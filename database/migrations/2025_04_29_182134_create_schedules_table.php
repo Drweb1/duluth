@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->foreignId('nurse_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('caregiver_id')->nullable()->constrained('users')->onDelete('cascade');
-
+            $table->string('visit_type')->nullable();
             $table->date('date');
             $table->time('start_time');
             $table->time('end_time');

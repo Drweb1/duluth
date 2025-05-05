@@ -150,7 +150,7 @@ Schedule
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <label class="form-label">Visit Type <x-required_field /></label>
-                                        <select class="form-control" name="visit_type">
+                                        <select class="form-control" name="visit_type" id="visit_type">
                                             <option value="">Select Visit Type</option>
                                             @foreach(['Medical Assessment', 'Initial Assessment', 'Reassessment', 'Supervisory Visit', 'Wound Care', 'Medication Review', 'Health Monitoring', 'Specialized Treatment'] as $type)
                                                 <option value="{{ $type }}" {{ $schedule->visit_type == $type ? 'selected' : '' }}>{{ $type }}</option>
@@ -158,6 +158,7 @@ Schedule
                                         </select>
                                         @error('visit_type') <small class="text-danger">{{ $message }}</small> @enderror
                                     </div>
+
                                     <div class="col-md-6 form-group">
                                         <label class="form-label">Date <x-required_field /></label>
                                         <input type="date" class="form-control" name="date" value="{{ $schedule->date }}">
@@ -174,7 +175,23 @@ Schedule
                                         <input type="time" class="form-control" name="end_time" value="{{ $schedule->end_time }}">
                                         @error('end_time') <small class="text-danger">{{ $message }}</small> @enderror
                                     </div>
-                                    <div class="mb-3 col-md-12 form-group">
+                                    <div class="col-md-6 form-group mt-3">
+                                        <label class="form-label">Select Tasks <x-required_field /></label>
+                                        @php
+                                            $selectedTasks = $schedule->get_tasks->pluck('id')->toArray();
+                                        @endphp
+
+                                        <select name="tasks[]" class="form-control">
+                                            @foreach($tasks as $task)
+                                                <option value="{{ $task->id }}" {{ in_array($task->id, $selectedTasks) ? 'selected' : '' }}>
+                                                    {{ $task->title }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+
+                                        @error('tasks') <small class="text-danger">{{ $message }}</small> @enderror
+                                    </div>
+                                    <div class="mb-3 col-md-6 form-group">
                                         <label class="form-label">Notes</label>
                                         <textarea class="form-control" name="notes" rows="3">{{ $schedule->notes }}</textarea>
                                         @error('notes') <small class="text-danger">{{ $message }}</small> @enderror
@@ -212,49 +229,89 @@ Schedule
 
 @endsection
 @section('scripts')
-<script>
-    document.querySelectorAll('.pill-toggle').forEach(button => {
-      button.addEventListener('click', function() {
-        document.querySelectorAll('.pill-toggle').forEach(btn => {
-          btn.classList.remove('active');
-        });
-        this.classList.add('active');
-        const staffType = this.dataset.type;
-        document.getElementById('staff_type').value = staffType;
-        if (staffType === 'nurse') {
-          $('#nurse_select').show();
-          $('#caregiver_select').hide();
-          $('#visit_type').html(`
-          <option value="">Select Visit Type</option>
-      <option value="Medical-Assessment">Medical Assessment</option>
-      <option value="Initial-Assessment">Initial Assessment</option>
-      <option value="Reassessment">Reassessment</option>
-      <option value="Supervisory-Visit">Supervisory Visit</option>
-      <option value="Wound-Care">Wound Care</option>
-      <option value="Medication-Review">Medication Review</option>
-      <option value="Health-Monitoring">Health Monitoring</option>
-      <option value="Specialized-Treatment">Specialized Treatment</option>
-          `);
-        } else {
-          $('#nurse_select').hide();
-          $('#caregiver_select').show();
-          $('#visit_type').html(`
-               <option value="">Select Visit Type</option>
-      <option value="Daily Care">Daily Care</option>
-      <option value="Weekly Check-in">Weekly Check-in</option>
-      <option value="Personal Care">Personal Care</option>
-      <option value="Companionship">Companionship</option>
-      <option value="Light_housekeeping">Light Housekeeping</option>
-      <option value="Supervisory-Assessment">Supervisory Assessment</option>
-      <option value="Care-Plan-Review">Care Plan Review</option>
-          `);
-        }
-      });
-    });
 
-    // Initialize
-    $(document).ready(function() {
-      $('.pill-toggle[data-type="nurse"]').addClass('active');
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Store the current visit type value
+        const currentVisitType = '{{ $schedule->visit_type }}';
+
+        // Initialize staff type based on saved value
+        const initialStaffType = document.getElementById('staff_type').value;
+        const nurseButton = document.querySelector('.pill-toggle[data-type="nurse"]');
+        const caregiverButton = document.querySelector('.pill-toggle[data-type="caregiver"]');
+
+        if (initialStaffType === 'caregiver') {
+            caregiverButton.classList.add('active');
+            $('#nurse_select').hide();
+            $('#caregiver_select').show();
+            updateVisitTypeOptions('caregiver', currentVisitType);
+        } else {
+            nurseButton.classList.add('active');
+            $('#nurse_select').show();
+            $('#caregiver_select').hide();
+            // No need to update options here as they're already nurse options by default
+            // Just ensure the correct option is selected
+            if (currentVisitType) {
+                $('#visit_type').val(currentVisitType);
+            }
+        }
+
+        document.querySelectorAll('.pill-toggle').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.pill-toggle').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+                const staffType = this.dataset.type;
+                document.getElementById('staff_type').value = staffType;
+
+                if (staffType === 'nurse') {
+                    $('#nurse_select').show();
+                    $('#caregiver_select').hide();
+                    updateVisitTypeOptions('nurse', currentVisitType);
+                } else {
+                    $('#nurse_select').hide();
+                    $('#caregiver_select').show();
+                    updateVisitTypeOptions('caregiver', currentVisitType);
+                }
+            });
+        });
+
+        function updateVisitTypeOptions(staffType, selectedValue) {
+            let options;
+
+            if (staffType === 'nurse') {
+                options = `
+                    <option value="">Select Visit Type</option>
+                    <option value="Medical Assessment" ${selectedValue === 'Medical Assessment' ? 'selected' : ''}>Medical Assessment</option>
+                    <option value="Initial Assessment" ${selectedValue === 'Initial Assessment' ? 'selected' : ''}>Initial Assessment</option>
+                    <option value="Reassessment" ${selectedValue === 'Reassessment' ? 'selected' : ''}>Reassessment</option>
+                    <option value="Supervisory Visit" ${selectedValue === 'Supervisory Visit' ? 'selected' : ''}>Supervisory Visit</option>
+                    <option value="Wound Care" ${selectedValue === 'Wound Care' ? 'selected' : ''}>Wound Care</option>
+                    <option value="Medication Review" ${selectedValue === 'Medication Review' ? 'selected' : ''}>Medication Review</option>
+                    <option value="Health Monitoring" ${selectedValue === 'Health Monitoring' ? 'selected' : ''}>Health Monitoring</option>
+                    <option value="Specialized Treatment" ${selectedValue === 'Specialized Treatment' ? 'selected' : ''}>Specialized Treatment</option>
+                `;
+            } else {
+                options = `
+                    <option value="">Select Visit Type</option>
+                    <option value="Daily Care" ${selectedValue === 'Daily Care' ? 'selected' : ''}>Daily Care</option>
+                    <option value="Weekly Check-in" ${selectedValue === 'Weekly Check-in' ? 'selected' : ''}>Weekly Check-in</option>
+                    <option value="Personal Care" ${selectedValue === 'Personal Care' ? 'selected' : ''}>Personal Care</option>
+                    <option value="Companionship" ${selectedValue === 'Companionship' ? 'selected' : ''}>Companionship</option>
+                    <option value="Light Housekeeping" ${selectedValue === 'Light Housekeeping' ? 'selected' : ''}>Light Housekeeping</option>
+                    <option value="Supervisory Assessment" ${selectedValue === 'Supervisory Assessment' ? 'selected' : ''}>Supervisory Assessment</option>
+                    <option value="Care Plan Review" ${selectedValue === 'Care Plan Review' ? 'selected' : ''}>Care Plan Review</option>
+                `;
+            }
+
+            $('#visit_type').html(options);
+
+            // If the selected value exists in the new options, select it
+            if (selectedValue && $(`#visit_type option[value="${selectedValue}"]`).length > 0) {
+                $('#visit_type').val(selectedValue);
+            }
+        }
     });
 </script>
 
@@ -269,6 +326,6 @@ Schedule
             }
         });
     });
-</scrip>
+</script>
 
 @endsection
