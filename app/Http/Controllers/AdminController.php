@@ -58,8 +58,30 @@ class AdminController extends Controller
         $requires=special_requirement::all();
         $specializations=specialization::all();
         $languages=language::all();
-        $schedules=schedule::where('caregiver_id',session('admin_id'))->orWhere('nurse_id',session('admin_id'))->with('get_client','get_tasks')->get();
-        return view('admin.dashboard',compact('requires','medics','languages','specializations','schedules'));
+        $schedules = schedule::where(function($query) {
+            $query->where('caregiver_id', session('admin_id'))
+                  ->orWhere('nurse_id', session('admin_id'));
+        })
+        ->with('get_client', 'get_tasks')
+        ->orderByRaw("CASE WHEN status = 'Completed' THEN 1 ELSE 0 END")
+        ->latest()
+        ->take(10)
+        ->get();
+
+        if ($schedules->count() < 8) {
+        $additionalNeeded = 8 - $schedules->count();
+        $additional = schedule::where(function($query) {
+                        $query->where('caregiver_id', session('admin_id'))
+                      ->orWhere('nurse_id', session('admin_id'));
+            })
+            ->with('get_client', 'get_tasks')
+            ->latest()
+            ->take($additionalNeeded)
+            ->get();
+
+            $schedules = $schedules->merge($additional)->take(8);
+        }
+         return view('admin.dashboard',compact('requires','medics','languages','specializations','schedules'));
     }
 
     public function customer(Request $request) {

@@ -95,6 +95,7 @@ Route::group(['middleware' => ['user_auth']], function () {
     Route::get('schedule_tasks/{id}',[ScheduleController::class,'schedule_tasks'])->name('schedule.tasks');
     Route::post('update_task',[ScheduleController::class,'update_status'])->name('update_status');
     Route::post('add_remarks',[ScheduleController::class,'add_remarks_to_schedule'])->name('add_remarks_to_schedule');
+    Route::post('/schedules/{id}/signature', [ScheduleController::class, 'add_signature'])->name('add_signature');
 });
 
 // Route::middleware('auth')->group(function () {

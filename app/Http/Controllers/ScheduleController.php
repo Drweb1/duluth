@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\task;
 use App\Models\schedule_task;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 class ScheduleController extends Controller
@@ -81,6 +82,7 @@ class ScheduleController extends Controller
             $schedule->date = $req->date;
             $schedule->start_time = $req->start_time;
             $schedule->end_time = $req->end_time;
+            $schedule->status="Pending";
             $schedule->notes = $req->notes ?? null;
             $schedule->recurring_visit = $req->recurring_visit ?? null;
             $schedule->frequency = $req->frequency ?? null;
@@ -90,6 +92,7 @@ class ScheduleController extends Controller
                     $sc_task=new schedule_task();
                     $sc_task->task_id=$task;
                     $sc_task->schedule_id= $schedule->id;
+                    $sc_task->status="pending";
                     $sc_task->save();
                 }
                 return redirect()->back()->with(['success' => 'Schedule added successfully']);
@@ -206,17 +209,46 @@ class ScheduleController extends Controller
 
         return redirect()->back()->with(['success' => 'Status updated']);
     }
-    public function add_remarks_to_schedule(Request $req){
+    public function add_remarks_to_schedule(Request $req) {
         $validator = Validator::make($req->all(), [
-            'task_id' => 'required|exists:schedule_tasks,id',
-            'remarks' => 'required|string'
+            'remarks' => 'required|array',
+            'remarks.*' => 'required|string'
         ]);
+
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        $schedule_task = schedule_task::find($req->task_id);
-        $schedule_task->remarks=$req->remarks;
-        $schedule_task->save();
-        return redirect()->back()->with(['success' => 'Remarks saved successfully...!']);
+
+        foreach ($req->remarks as $taskId => $remark) {
+            $schedule_task = schedule_task::find($taskId);
+            if ($schedule_task) {
+                $schedule_task->remarks = $remark;
+                $schedule_task->save();
+            }
+        }
+
+        return redirect()->back()->with(['success' => 'All remarks saved successfully!']);
+    }
+    public function add_signature(Request $request, $id)
+    {
+        $request->validate([
+            'signature' => 'required|string',
+        ]);
+
+        try {
+            $schedule = Schedule::findOrFail($id);
+            $signatureData = $request->input('signature');
+            $image = str_replace('data:image/png;base64,', '', $signatureData);
+            $image = str_replace(' ', '+', $image);
+            $imageName = 'signature_'.Str::random(10).'_'.time().'.png';
+            $schedule->signature=Storage::disk('public')->put("signatures/{$imageName}", base64_decode($image));
+            $schedule->save();
+            return redirect()->back()->with('success', 'Signature saved successfully!');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                   ->with('error', 'Error saving signature: '.$e->getMessage())
+                   ->withInput();
+        }
     }
 }

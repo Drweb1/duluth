@@ -417,22 +417,28 @@ Dashboard
         </div>
         <div class="row">
             @foreach ($schedules as $key => $schedule)
-            <div class="col-xl-3 col-md-6 box-col-12">
+            <div class="col-xl-3 col-md-6 box-col-12 mt-3">
                 <div class="card schedule-card">
                     <div class="card-header no-border pb-1">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h5 class="mb-1">Schedule #{{ $loop->iteration }}</h5>
+                                <h5 class="mb-1">Schedule Visit #{{ $loop->iteration }}</h5>
                                 <h6 class="text-primary mb-0">
                                     <i class="fa fa-user-circle me-1"></i>
                                     {{ $schedule->get_client->name ?? 'No Client' }}
                                 </h6>
                             </div>
                             <div class="text-end">
-                                <span
-                                    class="badge {{ $schedule->status == 1 ? 'badge-success' : 'badge-warning' }} mb-1">
-                                    {{ $schedule->status == 1 ? 'Active' : 'Pending' }}
-                                </span>
+                                <span class="badge
+                                @if($schedule->status == 'Pending') badge-warning
+                                @elseif($schedule->status == 'In Progress') badge-primary
+                                @elseif($schedule->status == 'Completed') badge-success
+                                @elseif($schedule->status == 'Cancelled') badge-danger
+                                @else badge-secondary @endif
+                                me-2">
+                                {{ $schedule->status ?? 'Pending' }}
+                            </span>
+
                                 <p class="small text-muted mb-0">
                                     {{ \Carbon\Carbon::parse($schedule->date)->diffForHumans() }}
                                 </p>
