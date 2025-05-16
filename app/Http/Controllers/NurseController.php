@@ -11,7 +11,7 @@ use Illuminate\Validation\Rule;
 class NurseController extends Controller
 {
     public function view(){
-        $nurses = user::where('type', 'nurse')->with('get_profile')->orderBy('id', 'desc')->get();
+        $nurses = user::where('type', 'nurse')->with('get_profile')->where('company_id',session('company_id'))->orderBy('id', 'desc')->get();
         return view('nurses.manage_nurses',compact('nurses'));
     }
     public function add(Request $req){
@@ -31,7 +31,7 @@ class NurseController extends Controller
            $nurse->name = $req->name;
            $nurse->email = $req->email;
            $nurse->phone = $req->phone;
-            //$nurse->company_id= "1"; // Optional line
+           $nurse->company_id=session("company_id");
            $nurse->type = 'nurse';
            $nurse->password = Str::random(6);
             $nurse->role = "nurse";

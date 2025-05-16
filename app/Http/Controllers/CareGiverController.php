@@ -23,7 +23,7 @@ class CareGiverController extends Controller
 {
     public function view(Request $request)
     {
-       $caregivers = user::where('type', 'caregiver')->with('get_profile','get_availabilities','get_specialities.get_speciality')->latest()->get();
+       $caregivers = user::where('type', 'caregiver')->where('company_id',session('company_id'))->with('get_profile','get_availabilities','get_specialities.get_speciality')->latest()->get();
         return view('caregivers.view', compact('caregivers'));
     }
     public function add(Request $req)
@@ -60,6 +60,7 @@ class CareGiverController extends Controller
             $caregiver->type = 'caregiver';
             $caregiver->role = 'caregiver';
             $caregiver->password = Str::random(6);
+            $caregiver->company_id=session("company_id");
             $caregiver->external_id = "caregiver_".substr((string) Str::uuid(), 0, 6);
             if($caregiver->save()){
 
@@ -136,7 +137,7 @@ class CareGiverController extends Controller
         return redirect()->back()->with('success', 'Caregiver deleted successfully.');
     }
     public function edit(Request $req, $id){
-        $caregiver= user::where('external_id',$id)->where('type', 'caregiver')->with('get_profile','get_availabilities','get_specialities.get_speciality','get_languages.get_language')->first();
+        $caregiver= user::where('external_id',$id)->where('company_id',session('company_id'))->where('type', 'caregiver')->with('get_profile','get_availabilities','get_specialities.get_speciality','get_languages.get_language')->first();
         if ($req->method() == 'POST') {
             $validator = Validator::make($req->all(), [
                 'name'                      => 'required|string|max:255',

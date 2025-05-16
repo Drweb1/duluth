@@ -125,7 +125,48 @@ Tasks
             </div>
             <div class="col-xl-8 box-col-12 xl-100">
                 <div class="container-fluid">
-                    <div class="card mb-3">
+
+                    <div class="card" style="padding: 1rem; background:#f8f5fd">
+                        <div class="row justify-content-center">
+                            <h4>Tasks</h4>
+                            <div class="col-md-12">
+                                <form id="multiRemarksForm" action="{{ route('add_remarks_to_schedule') }}"
+                                    method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    @foreach ($tasks as $index => $task)
+                                    @php
+                                    $taskId = $task->id;
+                                    @endphp
+
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                {{ $index + 1 }}. {{ $task->get_task->title }}
+                                            </h5>
+                                            <p class="text-muted">{{ $task->get_task->description ?? 'No description' }}
+                                            </p>
+
+                                            <div class="form-group mt-3">
+                                                <label for="remarks_{{ $taskId }}" class="form-label">Remarks</label>
+                                                <textarea name="remarks[{{ $taskId }}]" id="remarks_{{ $taskId }}"
+                                                    class="form-control" rows="3"
+                                                    placeholder="Enter your remarks here...">{{ old("remarks.$taskId", $task->remarks ?? '') }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endforeach
+
+                                    <div class="text-center mt-4">
+                                        <button type="submit" class="btn btn-primary">Submit All Remarks with
+                                            Signature</button>
+                                    </div>
+                                </form>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-3" style="padding: 1rem; background:#f8f5fd">
                         <div class="card-body">
 
                             <h5 class="card-title">Caregiver/Nurse Signature</h5>
@@ -155,56 +196,6 @@ Tasks
                                 </div>
                             </div>
 
-                        </div>
-                    </div>
-                    <div class="card" style="padding: 1rem; background:#f8f5fd">
-                        <div class="row justify-content-center">
-                            <h4>Tasks</h4>
-                            <div class="col-md-12">
-                                <form id="multiRemarksForm" action="{{ route('add_remarks_to_schedule') }}"
-                                    method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    @foreach ($tasks as $index => $task)
-                                    @php
-                                    $taskId = $task->id;
-                                    $statusColors = [
-                                    'pending' => 'warning',
-                                    'in_progress' => 'primary',
-                                    'completed' => 'success',
-                                    'on_hold' => 'secondary',
-                                    ];
-                                    $badgeColor = $statusColors[$task->status] ?? 'dark';
-                                    @endphp
-
-                                    <div class="card mb-3">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                {{ $index + 1 }}. {{ $task->get_task->title }}
-                                                <span class="badge bg-{{ $badgeColor }} float-end">
-                                                    {{ ucfirst(str_replace('_', ' ', $task->status)) }}
-                                                </span>
-                                            </h5>
-                                            <p class="text-muted">{{ $task->get_task->description ?? 'No description' }}
-                                            </p>
-
-                                            <div class="form-group mt-3">
-                                                <label for="remarks_{{ $taskId }}" class="form-label">Remarks</label>
-                                                <textarea name="remarks[{{ $taskId }}]" id="remarks_{{ $taskId }}"
-                                                    class="form-control" rows="3"
-                                                    placeholder="Enter your remarks here...">{{ old("remarks.$taskId", $task->remarks ?? '') }}</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @endforeach
-
-                                    <div class="text-center mt-4">
-                                        <button type="submit" class="btn btn-primary">Submit All Remarks with
-                                            Signature</button>
-                                    </div>
-                                </form>
-
-
-                            </div>
                         </div>
                     </div>
                 </div>

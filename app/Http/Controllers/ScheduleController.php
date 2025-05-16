@@ -14,9 +14,9 @@ class ScheduleController extends Controller
 {
     public function view(Request $request)
     {
-        $caregivers = User::where('type', 'caregiver')->get();
-        $nurses = User::where('type', 'nurse')->get();
-        $clients = User::where('type', 'client')->get();
+        $caregivers = User::where('type', 'caregiver')->where('company_id',session('company_id'))->get();
+        $nurses = User::where('type', 'nurse')->where('company_id',session('company_id'))->get();
+        $clients = User::where('type', 'client')->where('company_id',session('company_id'))->get();
 
         $viewType = $request->get('view', 'week');
         if ($viewType === 'week') {
@@ -37,7 +37,7 @@ class ScheduleController extends Controller
                 : $startDate->copy()->endOfMonth();
         }
 
-        $schedules = Schedule::with('get_client', 'get_nurse', 'get_caregiver')
+        $schedules = Schedule::with('get_client', 'get_nurse', 'get_caregiver')->where('company_id',session('company_id'))
             ->whereBetween('date', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])
             ->get();
         $tasks=task::get();
@@ -86,7 +86,7 @@ class ScheduleController extends Controller
             $schedule->notes = $req->notes ?? null;
             $schedule->recurring_visit = $req->recurring_visit ?? null;
             $schedule->frequency = $req->frequency ?? null;
-            $schedule->company_id=null;
+            $schedule->company_id=session("company_id");
             if($schedule->save()){
                 foreach($req->tasks as $task){
                     $sc_task=new schedule_task();
@@ -110,7 +110,7 @@ class ScheduleController extends Controller
     }
     public function edit($id, Request $req)
         {
-        $schedule = schedule::where('id',$id)->with('get_tasks')->first();
+        $schedule = schedule::where('id',$id)->where('company_id',session('company_id'))->with('get_tasks')->first();
             if ($req->method() == 'POST') {
                 $validator = Validator::make($req->all(), [
                     'client' => 'required|string',
@@ -161,7 +161,7 @@ class ScheduleController extends Controller
             $caregivers = user::where('type', 'caregiver')->get();
             $nurses = user::where('type', 'nurse')->get();
             $clients = user::where('type', 'client')->get();
-            $tasks=task::get();
+            $tasks=task::where('company_id',session('company_id'))->get();
             return view('appointment.edit', compact('schedule', 'clients', 'nurses', 'caregivers','tasks'));
     }
     public function add_task(Request $req)
@@ -179,7 +179,7 @@ class ScheduleController extends Controller
             $task = new task();
             $task->title = $req->title;
             $task->external_id = "task_" . substr((string) Str::uuid(), 0, 6);
-            $task->company_id = null;
+            $task->company_id = session("company_id");
             $task->description = $req->description;
             $task->save();
 

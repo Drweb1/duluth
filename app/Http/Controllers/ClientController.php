@@ -18,7 +18,7 @@ class ClientController extends Controller
 {
     public function view(Request $request)
     {
-        $clients = user::where('type', 'client')->with('get_profile')->orderBy('id', 'desc')->get();
+        $clients = user::where('type', 'client')->with('get_profile')->where('company_id',session('company_id'))->orderBy('id', 'desc')->get();
         return view('clients.view', compact('clients'));
     }
 
@@ -61,8 +61,7 @@ class ClientController extends Controller
             $client->password = Str::random(6);
              $client->role = "client";
              $client->external_id ="clinet_".substr((string) Str::uuid(), 0, 6);
-
-
+             $client->company_id=session("company_id");
             if ($client->save()) {
                 $profile = new user_profile();
                 $profile->user_id = $client->id;
@@ -123,8 +122,7 @@ class ClientController extends Controller
     }
     public function edit(Request $req, $id)
     {
-
-      $client=user::where('external_id',$id)->where('type', 'client')->with('get_profile','get_requirements','get_conditions')->first();
+      $client=user::where('external_id',$id)->where('type', 'client')->where('company_id',session('company_id'))->with('get_profile','get_requirements','get_conditions')->first();
         if ($req->method() == 'POST') {
             // return $req;
             $validator = Validator::make($req->all(), [
@@ -152,7 +150,7 @@ class ClientController extends Controller
                 'policy_number'             => 'required|string|max:100',
                 'medicare_number'           => 'nullable|string|max:100',
                 'group_number'              => 'nullable|string|max:100',
-                'insurance_card' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+                'insurance_card' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
             ]);
             if ($validator->fails()) {
                 return redirect()->back()->with(['errors' => $validator->errors()], 422);

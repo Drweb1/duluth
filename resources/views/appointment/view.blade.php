@@ -180,74 +180,6 @@ Orders
                 use Carbon\Carbon;
                 @endphp
 
-                {{-- <div class="col-md-6" style="overflow: auto">
-                    <div class="cal-date-widget card-body p-0">
-                        <div class="row">
-                            <div class="col-xl-5 col-xs-12 col-md-6 col-sm-12 gradient-primary">
-                                <div class="cal-info text-center">
-                                    <h2>{{ \Carbon\Carbon::today()->format('d') }}</h2>
-                                    <div class="d-inline-block mt-2">
-                                        <span class="b-r-light pe-3">{{ \Carbon\Carbon::today()->format('F') }} </span>
-                                        <span class="ps-4">{{ \Carbon\Carbon::today()->format('Y') }}</span>
-                                    </div>
-                                    <ul class="task-list">
-                                        @foreach($schedules as $schedule)
-                                        <li>
-                                            <span>{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}
-                                            </span>
-                                            {{ $schedule->get_client->name }} - {{ $schedule->get_nurse->name ??
-                                            $schedule->get_caregiver->name }}
-                                        </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-xl-7 col-xs-12 col-md-6 col-sm-12 p-50">
-                                <div class="cal-datepicker">
-                                    <div class="datepicker-here" data-language="en"> </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
-                {{-- <div class="col-md-9">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Client</th>
-                                <th>Staff Type</th>
-                                <th>Schedule</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($schedules as $schedule)
-                            <tr>
-                                <td>{{ $schedule->id }}</td>
-                                <td>{{ $schedule->get_client->name }}</td>
-                                <td>{{Str::ucfirst( $schedule->staff_type) }} ({{ $schedule->get_nurse->name ??
-                                    $schedule->get_caregiver->name }})</td>
-                                <td>{{ \Carbon\Carbon::parse($schedule->date)->format('d M Y') }} {{
-                                    \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}</td>
-                                <td>
-                                    <a href="{{ route('schedule.edit', $schedule->id) }}"
-                                        class="btn btn-sm btn-primary me-1" title="Edit">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-
-                                    <a href="{{ route('schedule.delete', $schedule->id) }}"
-                                        class="btn btn-sm btn-danger me-1" title="Delete"
-                                        onclick="return confirm('Are you sure you want to delete this Schedule?')">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
-
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div> --}}
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
@@ -381,7 +313,6 @@ Orders
                 }
                 @endphp
             </div>
-
 
 
         </div>

@@ -8,6 +8,7 @@ use App\Models\item;
 use App\Models\customer;
 use App\Models\affiliate;
 use App\Models\cart;
+use App\Models\company;
 use App\Models\language;
 use App\Models\user_language;
 use App\Models\order;
@@ -29,15 +30,20 @@ class AdminController extends Controller
                 'email' => 'required|email',
                 'password' => 'required',
             ]);
-            $user = user::where('email', $req->email) ->where('password', $req->password)
+          $user = user::where('email', $req->email)->where('password', $req->password)
                          ->first();
 
             if (!$user) {
                 return redirect()->back()->with("login_msg", 'Incorrect Email or Password!');
             }
+
             Auth::login($user);
             session()->put('admin_id', $user->id);
+            session()->put('company_id', "1");
             $req->session()->regenerate();
+            if($user->type=="reseller_user"){
+                return redirect()->route("reseller.dashboard");
+            }
             return redirect()->route('dashboard');
         }
 
@@ -61,7 +67,7 @@ class AdminController extends Controller
         $schedules = schedule::where(function($query) {
             $query->where('caregiver_id', session('admin_id'))
                   ->orWhere('nurse_id', session('admin_id'));
-        })
+        })->where('company_id',session('company_id'))
         ->with('get_client', 'get_tasks')
         ->orderByRaw("CASE WHEN status = 'Completed' THEN 1 ELSE 0 END")
         ->latest()
@@ -75,7 +81,7 @@ class AdminController extends Controller
                       ->orWhere('nurse_id', session('admin_id'));
             })
             ->with('get_client', 'get_tasks')
-            ->latest()
+            ->latest()->where('company_id',session('company_id'))
             ->take($additionalNeeded)
             ->get();
 
@@ -92,7 +98,7 @@ class AdminController extends Controller
                   ->orWhere('email', 'like', '%' . $request->q . '%');
             });
         }
-        $customers = $query->paginate(20);
+        $customers = $query->where('company_id',session('company_id'))->paginate(20);
 
         return view('admin.customer', compact('customers'));
     }
@@ -197,5 +203,10 @@ class AdminController extends Controller
                 Log::error('Error fetching order items: ' . $e->getMessage());
                 return response()->json(['error' => 'Unable to fetch order items.'], 500);
             }
+        }
+        public function reseller_dashboard(){
+            // return session()->all();
+            $companies=company::all();
+            return view("admin.companies",compact('companies'));
         }
 }
