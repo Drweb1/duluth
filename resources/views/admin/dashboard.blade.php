@@ -132,8 +132,6 @@ Dashboard
                 <div class="col-lg-6 main-header">
                     <h2>Welcome Back, {{ Auth::user()->name }}</h2>
                     <h6>{{ Auth::user()->type }}</h6>
-
-
                 </div>
                 <div class="col-lg-6 text-right">
                     <button class="btn btn-primary" data-toggle="modal" data-target="#addClientModal"><i
