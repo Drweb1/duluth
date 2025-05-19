@@ -177,39 +177,40 @@ Nurses
                         <h5 class="modal-title" id="editNurseModalLabel{{ $index }}">Edit Nurse</h5>
                     </div>
 
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="mb-3 col-md-6 form-group">
-                                <label class="form-label">Name</label>
-                                <input type="text" class="form-control" name="name" value="{{ $nurse->name }}">
-                            </div>
+               <div class="modal-body">
+    <div class="row">
+        <div class="mb-3 col-md-6 form-group">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" name="name" value="{{ $nurse->name ?? '' }}">
+        </div>
 
-                            <div class="mb-3 col-md-6 form-group">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-control" name="email" value="{{ $nurse->email }}">
-                            </div>
+        <div class="mb-3 col-md-6 form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" value="{{ $nurse->email ?? '' }}">
+        </div>
 
-                            <div class="mb-3 col-md-6 form-group">
-                                <label class="form-label">Phone</label>
-                                <input type="text" class="form-control" name="phone" value="{{ $nurse->phone }}">
-                            </div>
+        <div class="mb-3 col-md-6 form-group">
+            <label class="form-label">Phone</label>
+            <input type="text" class="form-control" name="phone" value="{{ $nurse->phone ?? '' }}">
+        </div>
 
-                            <div class="mb-3 col-md-6 form-group">
-                                <label class="form-label">Date of Birth</label>
-                                <input type="date" class="form-control" name="dob" value="{{ $nurse->get_profile->date_of_birth }}">
-                            </div>
+        <div class="mb-3 col-md-6 form-group">
+            <label class="form-label">Date of Birth</label>
+            <input type="date" class="form-control" name="dob" value="{{ $nurse->get_profile->date_of_birth ?? '' }}">
+        </div>
 
-                            <div class="mb-3 col-md-6 form-group">
-                                <label class="form-label">Salary</label>
-                                <input type="number" step="0.01" class="form-control" name="salary" value="{{ $nurse->salary }}">
-                            </div>
+        <div class="mb-3 col-md-6 form-group">
+            <label class="form-label">Salary</label>
+            <input type="number" step="0.01" class="form-control" name="salary" value="{{ $nurse->salary ?? '' }}">
+        </div>
 
-                            <div class="mb-3 col-md-12 form-group">
-                                <label class="form-label">Address</label>
-                                <textarea class="form-control" name="address" rows="2">{{ $nurse->get_profile->address }}</textarea>
-                            </div>
-                        </div>
-                    </div>
+        <div class="mb-3 col-md-12 form-group">
+            <label class="form-label">Address</label>
+            <textarea class="form-control" name="address" rows="2">{{ $nurse->get_profile->address ?? '' }}</textarea>
+        </div>
+    </div>
+</div>
+
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

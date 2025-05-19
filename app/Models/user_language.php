@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class user_language extends Model
 {
     use HasFactory;
-    public function get_language()
-    {
-        return $this->belongsTo(language::class, 'user_id', 'id');
-    }
+   public function get_language()
+{
+    return $this->belongsTo(Language::class, 'language_id', 'id');
+}
+
 }

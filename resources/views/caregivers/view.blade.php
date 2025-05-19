@@ -106,7 +106,7 @@ Caregivers
                                             <i class="fa fa-trash"></i>
                                         </a>
                                         <a href="{{ route('caregiver.profile', $caregiver->external_id) }}"
-                                            class="btn btn-sm btn-primary me-1" title="Edit">
+                                            class="btn btn-sm btn-primary me-1" title="Profile">
                                             <i class="fa fa-user"></i>
                                         </a>
                                     </td>
