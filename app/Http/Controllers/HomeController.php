@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Mail\PaymentSuccessMail;
 use Illuminate\Support\Facades\Mail;
 use Stripe\Stripe;
+use App\Models\company;
+use App\Models\schedule;
+use Illuminate\Support\Str;
+use App\Models\user;
 use Illuminate\Support\Facades\Session;
 use Stripe\Checkout\Session as StripeSession;
 
@@ -19,7 +23,36 @@ class HomeController extends Controller
 {
 
     public function index(){
-        return view('index');
+          $companies=company::all();
+            $appointments= schedule::count();
+            $nurses = user::where('type','nurse')->count();
+            $caregivers = user::where('type','caregiver')->count();
+            $clients = user::where('type','client')->count();
+        return view('index',compact('appointments','nurses','caregivers','clients'));
+    }
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'facility_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:companies,email',
+            'phone' => 'required|string|max:20',
+            'beds' => 'required|integer|min:1',
+            'address' => 'required|string',
+            'website' => 'nullable|url',
+            'terms' => 'accepted'
+        ]);
+        // dd("sadg");
+        $company = new company();
+        $company->name = $validated['facility_name'];
+        $company->external_id ="comp_".substr((string) Str::uuid(), 0, 6);
+        $company->email = $validated['email'];
+        $company->phone = $validated['phone'];
+        $company->beds = $validated['beds'];
+        $company->address = $validated['address'];
+        $company->website = $validated['website'] ?? null;
+        $company->save();
+
+        return response()->json(['message' => 'Company registered successfully']);
     }
     public function about(){
         return view('about');

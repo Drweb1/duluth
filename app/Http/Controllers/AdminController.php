@@ -207,6 +207,14 @@ class AdminController extends Controller
         public function reseller_dashboard(){
             // return session()->all();
             $companies=company::all();
+            // $appointments= schedule::count();
+            // $nurses = user::where('type','nurse')->count();
+            // $caregivers = user::where('type','caregiver')->count();
+            // $clients = user::where('type','client')->count();
+            // $appointmentsGrowth = 10;
+            // $nursesGrowth = 5;
+            // $caregiversGrowth = 7;
+            // $clientsGrowth = 4;
             return view("admin.companies",compact('companies'));
         }
 }

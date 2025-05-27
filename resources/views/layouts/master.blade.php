@@ -4,11 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Tradeline- Envy</title>
+    <title>Duluth</title>
     <meta name="author" content="Themeholy">
     <meta name="description" content="Sassa - Saas Startup Multipurpose HTML Template">
     <meta name="keywords" content="Sassa - Saas Startup Multipurpose HTML Template">
     <meta name="robots" content="INDEX,FOLLOW">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Mobile Specific Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -53,21 +54,46 @@
     <!-- Theme Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+       /* In your CSS file or <style> tag in head */
+:root {
+  --header-height: 80px; /* Adjust based on your actual header height */
+}
 
+body {
+  padding-top: var(--header-height);
+}
+
+.fixed-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: var(--header-height);
+  z-index: 1000; /* Ensure header stays above other content */
+  background: #fff; /* Match your header background */
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* For your specific content section */
+main {
+  position: relative;
+  z-index: 1; /* Lower than header */
+}
+    </style>
 
 </head>
 <body>
-    @include('layouts.header')
+       @include('layouts.header')
 
     @if(!request()->is('/'))
         @include('layouts.default_header')
     @endif
 
-    @yield('content')
+    <main>
+        @yield('content')
+    </main>
 
     @include('layouts.footer')
-
-  <!-- Jquery -->
   <script src="{{ asset('assets/js/vendor/jquery-3.7.1.min.js') }}"></script>
   <!-- Swiper Slider -->
   <script src="{{ asset('assets/js/swiper-bundle.min.js') }}"></script>
