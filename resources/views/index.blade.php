@@ -41,12 +41,24 @@
     .text-light-purple-600 {
         color: #9333ea;
     }
+    .core-value-card:hover {
+        transform: translateY(-10px) !important;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1) !important;
+    }
 
+    .core-value-card:hover > div:first-child > div {
+        height: 100% !important;
+    }
+
+    .core-value-card:hover > div:first-child {
+        transform: scale(1.1) !important;
+    }
 </style>
 <section
     style="background: linear-gradient(135deg, #4F46E5, #8B5CF6); padding: 60px 0; text-align: center; color: white;">
     <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-        <h1 style="font-size: 48px; font-weight: 800; margin-bottom: 20px; letter-spacing: -1px;">Elevated
+        <h1 style="font-size: 48px; font-weight: 800; margin-bottom: 20px; letter-spacing: -1px;" class="text-white">
+            Elevated
             Healthcare</h1>
         <p
             style="font-size: 20px; margin-bottom: 50px; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.5; color:#fff">
@@ -95,7 +107,7 @@
     </div>
 </section>
 
-<section style="background-color: #f6f9ff; padding: 40px;">
+<section style="background-color: #f6f9ff; padding: 40px;" class="mt-5">
     <div
         style="background: linear-gradient(90deg, #3366FF, #9933FF); color: white; padding: 40px; border-radius: 16px; text-align: center;">
         <h1 style="font-size: 36px; font-weight: bold;">CARESYSTEMS</h1>
@@ -394,7 +406,8 @@
                 <div class="card-body p-5">
                     <h2 class="text-center mb-4" style="color: #4F46E5; font-weight: 700;">Facility Registration</h2>
 
-                    <form action="{{ route('company.add') }}" method="POST" id="registerForm" enctype="multipart/form-data">
+                    <form action="{{ route('company.add') }}" method="POST" id="registerForm"
+                        enctype="multipart/form-data">
                         @csrf
                         <div class="row mb-4">
                             <div class="col-md-6 mb-3 mb-md-0">
@@ -478,7 +491,181 @@
     </div>
 </div>
 
+<section style="background-color: #ffffff; padding: 60px 0;" id="about-us">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <div
+                    style="background: linear-gradient(135deg, #f6f9ff 0%, #eef2f6 100%); border-radius: 16px; padding: 30px;">
+                    <h2 style="color: #3366FF; font-weight: 700; margin-bottom: 25px;">Our Story</h2>
+                    <p style="font-size: 16px; line-height: 1.7; color: #4a5568;">
+                        CARESYSTEMS was founded in 2015 by a team of healthcare professionals and technology experts who
+                        recognized the growing need for streamlined care coordination. What began as a small project to
+                        help local caregivers manage their schedules has evolved into a comprehensive healthcare
+                        management platform serving hundreds of providers across the region.
+                    </p>
+                    <p style="font-size: 16px; line-height: 1.7; color: #4a5568;">
+                        Our mission is to bridge the gap between healthcare providers, caregivers, and patients through
+                        innovative technology solutions that save time, reduce administrative burdens, and improve
+                        patient outcomes.
+                    </p>
+                </div>
+            </div>
 
+            <div class="col-lg-6">
+                <div
+                    style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border-radius: 20px; padding: 40px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.03);">
+                    <h3
+                        style="font-weight: 700; margin-bottom: 30px; color: #2d3748; position: relative; padding-bottom: 15px;">
+                        <span
+                            style="position: absolute; bottom: 0; left: 0; width: 60px; height: 4px; background: linear-gradient(90deg, #3366FF, #9933FF); border-radius: 2px;"></span>
+                        Why Choose CARESYSTEMS?
+                    </h3>
+
+                    <div class="feature-card"
+                        style="display: flex; margin-bottom: 25px; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(51, 102, 255, 0.08); transition: all 0.3s ease;">
+                        <div
+                            style="background: linear-gradient(135deg, #3366FF 0%, #6699FF 100%); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-right: 20px; flex-shrink: 0; color: white;">
+                            <i class="fas fa-shield-alt" style="font-size: 22px;"></i>
+                        </div>
+                        <div>
+                            <h4 style="font-weight: 700; margin-bottom: 8px; color: #2d3748;">Secure & Compliant</h4>
+                            <p style="color: #718096; font-size: 15px; line-height: 1.6; margin-bottom: 0;">
+                                HIPAA-compliant platform with enterprise-grade encryption and regular security audits to
+                                protect sensitive health information.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card"
+                        style="display: flex; margin-bottom: 25px; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(51, 102, 255, 0.08); transition: all 0.3s ease;">
+                        <div
+                            style="background: linear-gradient(135deg, #10B981 0%, #34D399 100%); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-right: 20px; flex-shrink: 0; color: white;">
+                            <i class="fas fa-bolt" style="font-size: 22px;"></i>
+                        </div>
+                        <div>
+                            <h4 style="font-weight: 700; margin-bottom: 8px; color: #2d3748;">Efficiency Boost</h4>
+                            <p style="color: #718096; font-size: 15px; line-height: 1.6; margin-bottom: 0;">
+                                Intelligent automation reduces administrative tasks by 40%, giving caregivers more time
+                                for patient care.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card"
+                        style="display: flex; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(51, 102, 255, 0.08); transition: all 0.3s ease;">
+                        <div
+                            style="background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-right: 20px; flex-shrink: 0; color: white;">
+                            <i class="fas fa-headset" style="font-size: 22px;"></i>
+                        </div>
+                        <div>
+                            <h4 style="font-weight: 700; margin-bottom: 8px; color: #2d3748;">Dedicated Support</h4>
+                            <p style="color: #718096; font-size: 15px; line-height: 1.6; margin-bottom: 0;">
+                                24/7 US-based support with average response times under 15 minutes for critical issues.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <a href="#"
+                            style="display: inline-block; background: linear-gradient(90deg, #3366FF, #9933FF); color: white; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; margin-top: 10px; box-shadow: 0 4px 12px rgba(51, 102, 255, 0.2); transition: all 0.3s ease;">
+                            See All Features <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12 text-center mb-5">
+                <h2 style="color: #2d3748; font-weight: 700; position: relative; display: inline-block;">
+                    <span
+                        style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: linear-gradient(90deg, #3366FF, #9933FF); border-radius: 2px;"></span>
+                    Our Core Values
+                </h2>
+                <p class="text-muted mt-3" style="font-size: 1.1rem;">Guiding principles that shape everything we do</p>
+            </div>
+
+            <div class="col-md-4 mb-4 position-relative">
+
+                <div class="core-value-card"
+                    style="background: white; border-radius: 16px; padding: 30px; height: 100%; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.03); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1); position: relative; z-index: 2; overflow: hidden;">
+                    <!-- Animated border effect -->
+                    <div
+                        style="position: absolute; top: 0; left: 0; width: 4px; height: 0; background: linear-gradient(to bottom, #3366FF, #9933FF); transition: all 0.6s ease;">
+                    </div>
+
+                    <div
+                        style="background: linear-gradient(135deg, #3366FF 0%, #6699FF 100%); width: 70px; height: 70px; border-radius: 18px; display: flex; align-items: center; justify-content: center; margin-bottom: 25px; color: white; transition: transform 0.3s ease;">
+                        <i class="fas fa-heart" style="font-size: 28px;"></i>
+                    </div>
+                    <h4 style="font-weight: 700; color: #2d3748; margin-bottom: 15px; position: relative;">
+                        <span
+                            style="position: absolute; bottom: -8px; left: 0; width: 40px; height: 3px; background: #3366FF; border-radius: 2px;"></span>
+                        Compassionate Care
+                    </h4>
+                    <p style="color: #4a5568; line-height: 1.7; font-size: 15px; margin-bottom: 0;">
+                        We believe technology should enhance human connection, not replace it. Our solutions are
+                        designed to give caregivers more time for what matters most - their patients.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4 position-relative">
+
+                <div class="core-value-card"
+                    style="background: white; border-radius: 16px; padding: 30px; height: 100%; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.03); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1); position: relative; z-index: 2; overflow: hidden;">
+                    <!-- Animated border effect -->
+                    <div
+                        style="position: absolute; top: 0; left: 0; width: 4px; height: 0; background: linear-gradient(to bottom, #3366FF, #9933FF); transition: all 0.6s ease;">
+                    </div>
+
+                    <div
+                        style="background: linear-gradient(135deg, #10B981 0%, #34D399 100%); width: 70px; height: 70px; border-radius: 18px; display: flex; align-items: center; justify-content: center; margin-bottom: 25px; color: white; transition: transform 0.3s ease;">
+                        <i class="fas fa-lightbulb" style="font-size: 28px;"></i>
+                    </div>
+                    <h4 style="font-weight: 700; color: #2d3748; margin-bottom: 15px; position: relative;">
+                        <span
+                            style="position: absolute; bottom: -8px; left: 0; width: 40px; height: 3px; background: #10B981; border-radius: 2px;"></span>
+                        Continuous Innovation
+                    </h4>
+                    <p style="color: #4a5568; line-height: 1.7; font-size: 15px; margin-bottom: 0;">
+                        We're committed to evolving our platform based on real user feedback and the latest advancements
+                        in healthcare technology.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4 position-relative">
+                <div class="core-value-card"
+                    style="background: white; border-radius: 16px; padding: 30px; height: 100%; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.03); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1); position: relative; z-index: 2; overflow: hidden;">
+                    <!-- Animated border effect -->
+                    <div
+                        style="position: absolute; top: 0; left: 0; width: 4px; height: 0; background: linear-gradient(to bottom, #3366FF, #9933FF); transition: all 0.6s ease;">
+                    </div>
+
+                    <div
+                        style="background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%); width: 70px; height: 70px; border-radius: 18px; display: flex; align-items: center; justify-content: center; margin-bottom: 25px; color: white; transition: transform 0.3s ease;">
+                        <i class="fas fa-handshake" style="font-size: 28px;"></i>
+                    </div>
+                    <h4 style="font-weight: 700; color: #2d3748; margin-bottom: 15px; position: relative;">
+                        <span
+                            style="position: absolute; bottom: -8px; left: 0; width: 40px; height: 3px; background: #F59E0B; border-radius: 2px;"></span>
+                        Integrity First
+                    </h4>
+                    <p style="color: #4a5568; line-height: 1.7; font-size: 15px; margin-bottom: 0;">
+                        We maintain the highest standards of ethics, transparency, and accountability in all our
+                        operations and partnerships.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+</section>
 
 <section class="bg-white py-16">
     <div class="container">
@@ -577,7 +764,7 @@
         </div>
     </div>
 </section>
-<section class="bg-gray-50 py-16">
+<section class="bg-gray-50 py-16 mt-5" id="plans">
     <div class="container">
         <div class="text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
@@ -600,7 +787,8 @@
                             <li>✔ Profile & Credential Management</li>
                             <li>✔ Support Access</li>
                         </ul>
-                        <a href="#" class="btn btn-teal w-100 text-white" style="background-color: #4f46e5;">Get Started</a>
+                        <a href="#" class="btn btn-teal w-100 text-white" style="background-color: #4f46e5;">Get
+                            Started</a>
                     </div>
                 </div>
             </div>
@@ -632,7 +820,8 @@
                             <li>✔ Full Dashboard Access</li>
                             <li>✔ Dedicated Support</li>
                         </ul>
-                        <a href="#" class="btn btn-teal w-100 text-white" style="background-color: #4f46e5;">Contact Us</a>
+                        <a href="#" class="btn btn-teal w-100 text-white" style="background-color: #4f46e5;">Contact
+                            Us</a>
                     </div>
                 </div>
             </div>
@@ -670,9 +859,45 @@
 
 </script> --}}
 <script>
+    // Add intersection observer for scroll animations
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.core-value-card');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        cards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    });
+</script>
+<script>
     document.querySelectorAll('.scroll-to-register').forEach(function(button) {
         button.addEventListener('click', function() {
             document.getElementById('registrationForm').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+    document.querySelectorAll('.scroll-to-plans').forEach(function(button) {
+        button.addEventListener('click', function() {
+            document.getElementById('plans').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+        document.querySelectorAll('.scroll-to-about').forEach(function(button) {
+        button.addEventListener('click', function() {
+            document.getElementById('about-us').scrollIntoView({
                 behavior: 'smooth'
             });
         });

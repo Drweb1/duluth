@@ -41,6 +41,7 @@
                         <div class="menu-all-pages-container">
                             <ul class="menu">
                                 <li><a href="{{route('index')}}">Home</a></li>
+                                 <li><a class="scroll-to-about">About Us</a></li>
                             </ul>
                         </div>
                     </div>

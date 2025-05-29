@@ -58,6 +58,9 @@
                 <ul style="display: flex; gap: 20px; margin: 0; padding: 0; list-style: none;">
                     <li><a href="{{ route('index') }}" style="text-decoration: none; color: #333; font-size: 14px; font-weight: 500;">Home</a></li>
                     <li><a href="#" class="scroll-to-register" style="text-decoration: none; color: #333; font-size: 14px; font-weight: 500;">Register</a></li>
+                 <li><a href="#" class="scroll-to-plans" style="text-decoration: none; color: #333; font-size: 14px; font-weight: 500;">Plans</a></li>
+                 <li><a href="#" class="scroll-to-about" style="text-decoration: none; color: #333; font-size: 14px; font-weight: 500;">About Us</a></li>
+
                 </ul>
             </nav>
             <div class="d-flex align-items-center gap-3">
