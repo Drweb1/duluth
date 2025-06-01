@@ -231,18 +231,17 @@ class ScheduleController extends Controller
     }
     public function add_signature(Request $request, $id)
     {
-        $request->validate([
-            'signature' => 'required|string',
-        ]);
-
         try {
-            $schedule = Schedule::findOrFail($id);
-            $signatureData = $request->input('signature');
-            $image = str_replace('data:image/png;base64,', '', $signatureData);
-            $image = str_replace(' ', '+', $image);
-            $imageName = 'signature_'.Str::random(10).'_'.time().'.png';
-            $schedule->signature=Storage::disk('public')->put("signatures/{$imageName}", base64_decode($image));
-            $schedule->save();
+
+          $schedule = schedule::findOrFail($id);
+                 $imageData = $request->input('signature_data');
+                $imageData = str_replace('data:image/png;base64,', '', $imageData);
+                $imageData = str_replace(' ', '+', $imageData);
+                $imageName = 'signature_'.time().'.png';
+
+                Storage::disk('public')->put("signatures/{$imageName}", base64_decode($imageData));
+                $schedule->signature = "signatures/{$imageName}";
+                $schedule->save();
             return redirect()->back()->with('success', 'Signature saved successfully!');
 
         } catch (\Exception $e) {
@@ -250,5 +249,10 @@ class ScheduleController extends Controller
                    ->with('error', 'Error saving signature: '.$e->getMessage())
                    ->withInput();
         }
+    }
+    public function profile($id){
+        $schedule = schedule::find($id);
+        $tasks = schedule_task::where('schedule_id',$schedule->id)->with('get_task')->get();
+        return view('appointment.profile' ,compact('tasks','schedule'));
     }
 }

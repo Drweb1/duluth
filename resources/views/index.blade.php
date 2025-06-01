@@ -226,10 +226,10 @@
                                             Certification</li>
                                     </ul>
                                 </div>
-
+{{--
                                 <div class="text-center mt-3">
                                     <button class="btn btn-outline-primary">Apply Now</button>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -307,10 +307,10 @@
                                         <li><i class="fas fa-file-alt text-primary me-2"></i> PCA Certification</li>
                                     </ul>
                                 </div>
-
+{{--
                                 <div class="text-center mt-3">
                                     <button class="btn btn-outline-primary ">Apply Now</button>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -370,10 +370,10 @@
                                         <li><i class="fas fa-file-alt text-primary me-2"></i> CPR/First Aid
                                             Certification</li>
                                     </ul>
-                                </div>
+                                {{-- </div>
                                 <div class="text-center mt-3">
                                     <button class="btn btn-outline-primary">Apply Now</button>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -564,13 +564,6 @@
                                 24/7 US-based support with average response times under 15 minutes for critical issues.
                             </p>
                         </div>
-                    </div>
-
-                    <div class="text-center mt-4">
-                        <a href="#"
-                            style="display: inline-block; background: linear-gradient(90deg, #3366FF, #9933FF); color: white; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; margin-top: 10px; box-shadow: 0 4px 12px rgba(51, 102, 255, 0.2); transition: all 0.3s ease;">
-                            See All Features <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
                     </div>
                 </div>
             </div>

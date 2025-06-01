@@ -128,8 +128,6 @@
                   <li class="iconbar-header"><a href="{{route('import_items')}}">Add Items</a></li>
               </ul>
               </li> --}}
-              <li><a class="bar-icons" href="{{route('orders')}}"><i class="fa fa-inbox"></i><span>Messages</span></a>
-              </li>
               <li><a class="bar-icons" href="{{route('view-clients')}}"><i class="fa fa-users"></i><span>Client Management</span></a>
               </li>
               <li><a class="bar-icons" href="{{route('view-caregivers')}}"><i class="fa fa-users"></i><span>Caregivers Management</span></a>
@@ -148,7 +146,7 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-md-6 footer-copyright">
-                <p class="mb-0">Copyright © 2021 Tradeline Envy. All rights reserved.</p>
+                <p class="mb-0">Copyright © 2021 Duluth. All rights reserved.</p>
               </div>
               <div class="col-md-6">
                 <p class="pull-right mb-0">Hand-crafted & made with<i class="fa fa-heart"></i></p>

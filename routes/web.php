@@ -61,6 +61,6 @@ Route::group(['middleware' => ['user_auth']], function () {
     Route::match(['get','post'],'/add_document',[DocumentController::class,"add"])->name('document.add');
     Route::get('/documents/{id}', [DocumentController::class, 'documents'])->name('folder.documents');
     Route::get('/document/delete/{id}', [DocumentController::class, 'delete_doc'])->name('document.delete');
-
+    Route::get('/schedule/profile/{id}',[ScheduleController::class,'profile'])->name('schedule.profile');
 });
 

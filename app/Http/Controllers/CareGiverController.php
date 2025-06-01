@@ -184,22 +184,22 @@ class CareGiverController extends Controller
                     $profile->emergency_phone = $req->emergency_phone;
                     $profile->emergency_relation = $req->emergency_relationship;
                     $profile->care_type = $req->care_type;
-
-                    if ($req->hasFile('background_check_file')) {
-                        // dd("jehgdywfd");
-                        $profile->background_check = $req->file('background_check_file')->store('public/caregiver_docs');
+                    // return $req;
+                    if ($req->hasFile('background_check')) {
+                        // dd("jhgjshegf");
+                        $profile->background_check = $req->file('background_check')->store('caregiver_docs', 'public');
                     }
 
-                    if ($req->hasFile('cpr_certification_file')) {
-                        $profile->crp_certification = $req->file('cpr_certification_file')->store('public/caregiver_docs');
+                    if ($req->hasFile('crp_certification')) {
+                        $profile->crp_certification = $req->file('crp_certification')->store('caregiver_docs', 'public');
                     }
 
-                    if ($req->hasFile('tb_test_file')) {
-                        $profile->tb_test = $req->file('tb_test_file')->store('public/caregiver_docs');
+                    if ($req->hasFile('tb_test')) {
+                        $profile->tb_test = $req->file('tb_test')->store('caregiver_docs', 'public');
                     }
 
-                    if ($req->hasFile('drivers_license_file')) {
-                        $profile->licence = $req->file('drivers_license_file')->store('public/caregiver_docs');
+                    if ($req->hasFile('licence')) {
+                        $profile->licence = $req->file('licence')->store('caregiver_docs', 'public');
                     }
 
                     if ($profile->save()) {

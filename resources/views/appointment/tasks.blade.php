@@ -157,8 +157,7 @@ Tasks
                                     @endforeach
 
                                     <div class="text-center mt-4">
-                                        <button type="submit" class="btn btn-primary">Submit All Remarks with
-                                            Signature</button>
+                                        <button type="submit" class="btn btn-primary">Submit All Remarks</button>
                                     </div>
                                 </form>
 
@@ -220,23 +219,23 @@ Tasks
                                             const signatureData = document.getElementById('signature-data');
                                             const form = document.getElementById('signatureForm');
                                             const clearButton = document.getElementById('clear-signature');
-
-                                            // Handle form submission
                                             form.addEventListener('submit', function(e) {
                                                 if (signaturePad.isEmpty()) {
                                                     alert('Please provide your signature');
                                                     e.preventDefault();
                                                 } else {
-                                                    signatureData.value = signaturePad.toDataURL('image/png');
+                                                    const dataURL = signaturePad.toDataURL('image/png');
+
+                                                    const fileInput = document.createElement('input');
+                                                    fileInput.type = 'hidden';
+                                                    fileInput.name = 'signature_data';
+                                                    fileInput.value = dataURL;
+                                                    form.appendChild(fileInput);
                                                 }
                                             });
-
-                                            // Clear signature
                                             clearButton.addEventListener('click', function() {
                                                 signaturePad.clear();
                                             });
-
-                                            // Handle window resize
                                             function resizeCanvas() {
                                                 const ratio = Math.max(window.devicePixelRatio || 1, 1);
                                                 canvas.width = canvas.offsetWidth * ratio;
@@ -244,7 +243,6 @@ Tasks
                                                 canvas.getContext('2d').scale(ratio, ratio);
                                                 signaturePad.clear();
                                             }
-
                                             window.addEventListener('resize', resizeCanvas);
                                             resizeCanvas();
                                         });

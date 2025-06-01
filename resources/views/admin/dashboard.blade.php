@@ -183,7 +183,7 @@ Dashboard
 
                                     </div>
                                     <div class="widgets-bottom">
-                                        <h5 class="f-w-700 mb-0">Appointments<span class="pull-right">111</span></h5>
+                                        <h5 class="f-w-700 mb-0">Appointments<span class="pull-right">{{$schedules->count()}}</span></h5>
                                     </div>
                                 </div>
                                 <span class="tag-hover-effect"><span class="dots-group"><span
@@ -225,7 +225,7 @@ Dashboard
 
                                     </div>
                                     <div class="widgets-bottom">
-                                        <h5 class="f-w-700 mb-0">Documents<span class="pull-right"> 34534</span></h5>
+                                        <h5 class="f-w-700 mb-0">Documents<span class="pull-right"> {{$docs}}</span></h5>
                                     </div>
                                 </div><span class="tag-hover-effect"><span class="dots-group"><span
                                             class="dots dots1"></span><span class="dots dots2 dot-small"></span><span
@@ -266,7 +266,7 @@ Dashboard
 
                                     </div>
                                     <div class="widgets-bottom">
-                                        <h5 class="f-w-700 mb-0">Staff Members<span class="pull-right">4232</span></h5>
+                                        <h5 class="f-w-700 mb-0">Staff Nurses<span class="pull-right">{{$nurses}}</span></h5>
                                     </div>
                                 </div><span class="tag-hover-effect"><span class="dots-group"><span
                                             class="dots dots1"></span><span class="dots dots2 dot-small"></span><span
@@ -311,7 +311,7 @@ Dashboard
 
                                     </div>
                                     <div class="widgets-bottom">
-                                        <h5 class="f-w-700 mb-0">Active Clients<span class="pull-right">35345</span>
+                                        <h5 class="f-w-700 mb-0">Clients<span class="pull-right">{{$clients}}</span>
                                         </h5>
                                     </div>
                                 </div><span class="tag-hover-effect"><span class="dots-group"><span
@@ -329,89 +329,6 @@ Dashboard
 
                 </div>
             </div>
-
-            <div class="col-xl-12 xl-100 box-col-12">
-                <div class="card">
-                    <div class="card-header no-border">
-                        <h5>Compliance Monitoring</h5>
-                        <ul class="creative-dots">
-                            <li class="bg-primary big-dot"></li>
-                            <li class="bg-secondary semi-big-dot"></li>
-                            <li class="bg-warning medium-dot"></li>
-                            <li class="bg-info semi-medium-dot"></li>
-                            <li class="bg-secondary semi-small-dot"></li>
-                            <li class="bg-primary small-dot"></li>
-                        </ul>
-                        <div class="card-header-right">
-                            <ul class="list-unstyled card-option">
-                                <li><i class="icofont icofont-gear fa fa-spin font-primary"></i></li>
-                                <li><i class="view-html fa fa-code font-primary"></i></li>
-                                <li><i class="icofont icofont-maximize full-card font-primary"></i></li>
-                                <li><i class="icofont icofont-minus minimize-card font-primary"></i></li>
-                                <li><i class="icofont icofont-refresh reload-card font-primary"></i></li>
-                                <li><i class="icofont icofont-error close-card font-primary"></i></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card-body pt-0">
-                        <div class="row">
-                            <div class="col-sm-6 col-xl-4 col-lg-4 box-col-4">
-                                <div class="card gradient-info o-hidden">
-                                    <div class="b-r-4 card-body">
-                                        <div class="d-flex static-top-widget">
-                                            <div class="align-self-center text-center">
-                                                <div class="text-white i" data-feather="check-circle"></div>
-                                            </div>
-                                            <div class="flex-grow-1"><span class="m-0 text-white">HIPAA Compliance
-                                                    <p>All systems meet requirements</p>
-                                                </span>
-                                                <h4 class="mb-0 counter text-white">45631</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-xl-4 col-lg-4 box-col-4">
-                                <div class="card gradient-success o-hidden">
-                                    <div class="b-r-4 card-body">
-                                        <div class="d-flex static-top-widget ">
-                                            <div class="align-self-center text-center">
-                                                <div class="text-white i me-2" data-feather="alert-octagon"></div>
-                                            </div>
-                                            <div class="flex-grow-1"><span class="m-0 text-white">Document Verification
-                                                    <p>3 documents need review</p>
-                                                </span>
-                                                <h4 class="mb-0 counter text-white">45631</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-xl-4 col-lg-4 box-col-4">
-                                <div class="card gradient-primary o-hidden">
-                                    <div class="b-r-4 card-body">
-                                        <div class="d-flex static-top-widget">
-                                            <div class="align-self-center text-center">
-                                                <div class="text-white i" data-feather="file"></div>
-                                            </div>
-                                            <div class="flex-grow-1"><span class="m-0 text-white">Staff Certifications
-                                                    <p>All certifications up to date</p>
-                                                </span>
-
-                                                <h4 class="mb-0 counter text-white">45631</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-
         </div>
         <div class="row">
             @foreach ($schedules as $key => $schedule)
@@ -510,9 +427,7 @@ Dashboard
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Add New Client</h5>
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span>&times;</span>
-                        </button>
+
                     </div>
 
                     <div class="modal-body">
@@ -734,9 +649,6 @@ Dashboard
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Add New Caregiver</h5>
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span>&times;</span>
-                        </button>
                     </div>
 
                     <div class="modal-body">

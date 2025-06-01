@@ -17,6 +17,7 @@ use App\Models\medical_condition;
 use App\Models\client_special_requirement;
 use App\Models\client_medical_condition;
 use App\Models\user;
+use App\Models\document;
 use App\Models\specialization;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -87,123 +88,12 @@ class AdminController extends Controller
 
             $schedules = $schedules->merge($additional)->take(8);
         }
-         return view('admin.dashboard',compact('requires','medics','languages','specializations','schedules'));
+        $clients = user::where('type', 'client')->where('company_id',session('company_id'))->count();
+        $docs=document::where('company_id',session('company_id'))->count();
+       $nurses = user::where('type', 'nurse')->where('company_id',session('company_id'))->count();
+         return view('admin.dashboard',compact('requires','medics','languages','specializations','schedules','clients','docs','nurses'));
     }
 
-    public function customer(Request $request) {
-        $query = customer::query();
-        if ($request->has('q') && !empty($request->q)) {
-            $query->where(function($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->q . '%')
-                  ->orWhere('email', 'like', '%' . $request->q . '%');
-            });
-        }
-        $customers = $query->where('company_id',session('company_id'))->paginate(20);
-
-        return view('admin.customer', compact('customers'));
-    }
-
-
-    public function orders(Request $request)
-    {
-        $orders = order::with(['customer', 'item']) ->when($request->status, function ($query) use ($request) {
-            return $query->where('status', $request->status);
-        })
-        ->when($request->customer_name, function ($query) use ($request) {
-            return $query->whereHas('customer', function ($query) use ($request) {
-                $query->where('name', 'like', '%' . $request->customer_name . '%');
-            });
-        })
-        ->paginate(10);
-        return view('admin.orders', compact('orders'));
-    }
-
-    public function affiliates()
-    {
-        $affiliates = Affiliate::paginate(20);
-        return view('admin.affiliates', compact('affiliates'));
-    }
-
-    public function showItems(Request $request)
-    {
-        $query = $request->input('q');
-        $items = item::where(function ($q) use ($query) {
-            if ($query) {
-                $q->where('owner', 'LIKE', '%' . $query . '%')
-                  ->orWhere('type', 'LIKE', '%' . $query . '%');
-            }
-        })->paginate(20);
-
-        $total = item::count();
-        $current = $items->count();
-
-        return view('admin.items', compact('items', 'total', 'current'));
-    }
-
-
-    public function import(Request $request)
-    {
-        if ($request->isMethod('post')) {
-            $request->validate([
-                'file' => 'required|mimes:xlsx,csv,xls|max:2048',
-            ]);
-
-            $errors = [];
-
-            try {
-                Excel::import(new ItemsImport($errors), $request->file('file'));
-
-                if (count($errors) > 0) {
-                    return redirect()->back()->with('import_errors', $errors);
-                }
-
-                return redirect()->back()->with('success', 'Items imported successfully.');
-            } catch (\Exception $e) {
-
-                Log::error('Import Error: ' . $e->getMessage());
-                return redirect()->back()->with('error', 'An error occurred while importing items: ' . $e->getMessage());
-            }
-        }
-
-        return view('admin.import_items');
-    }
-        public function destroy($id)
-        {
-            $item = item::findOrFail($id);
-            if($item->delete()){
-            return redirect()->back()->with('success', 'Item deleted successfully.');
-            };
-            return redirect()->back()->with('error', 'Error deleting item.');
-        }
-        public function customer_Details($userId)
-        {
-            $customer = customer::with(['orders', 'cart.cart_Items'])->find($userId);
-            return view('admin.customer_details', compact('customer'));
-        }
-        // public function getOrderItems(Order $order)
-        // {
-        //     try {
-        //         $items = $order->order_items()->with('items:id,owner,type,payment_term,price')->get();
-        //         return response()->json(['items' => $items]);
-        //     } catch (\Exception $e) {
-        //         Log::error('Error fetching order items: ' . $e->getMessage());
-        //         return response()->json(['error' => 'Unable to fetch order items.'], 500);
-        //     }
-        // }
-        public function getOrderItems(Order $order)
-        {
-            try {
-                $items = $order->order_items()
-                    ->with(['items:id,owner,type,payment_term,price'])
-                    ->get();
-                $customer = $order->customer()->select('id', 'name', 'email', 'phone_number', 'country', 'city', 'address','postal_code')->first();
-
-                return response()->json(['items' => $items, 'customer' => $customer]);
-            } catch (\Exception $e) {
-                Log::error('Error fetching order items: ' . $e->getMessage());
-                return response()->json(['error' => 'Unable to fetch order items.'], 500);
-            }
-        }
         public function reseller_dashboard(){
             // return session()->all();
             $companies=company::all();

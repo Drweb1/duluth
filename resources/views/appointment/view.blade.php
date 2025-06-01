@@ -222,8 +222,6 @@ Orders
                                     </thead>
                                 </table>
                             </div>
-
-                            <!-- Calendar Time Slots -->
                             <div class="calendar-body">
                                 @php
                              $startTime = Carbon::createFromTime(0, 0, 0);
@@ -286,6 +284,10 @@ Orders
                                                                 class="btn btn-xs btn-danger"
                                                                 onclick="return confirm('Are you sure?')">
                                                                 <i class="fa fa-trash"></i>
+                                                            </a>
+                                                             <a href="{{ route('schedule.profile', $appointment->id) }}"
+                                                                class="btn btn-xs btn-primary">
+                                                                <i class="fa fa-eye"></i>
                                                             </a>
                                                         </div>
                                                     </div>
