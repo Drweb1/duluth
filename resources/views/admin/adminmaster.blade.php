@@ -128,12 +128,14 @@
                   <li class="iconbar-header"><a href="{{route('import_items')}}">Add Items</a></li>
               </ul>
               </li> --}}
+               @if ($currentUserType === 'admin' )
               <li><a class="bar-icons" href="{{route('view-clients')}}"><i class="fa fa-users"></i><span>Client Management</span></a>
               </li>
               <li><a class="bar-icons" href="{{route('view-caregivers')}}"><i class="fa fa-users"></i><span>Caregivers Management</span></a>
               </li>
               <li><a class="bar-icons" href="{{route('nurses')}}"><i class="fa fa-stethoscope"></i><span>Nurses</span></a>
               </li>
+              @endif
               {{-- <li><a class="bar-icons" href="{{route('affiliates')}}"><i class="pe-7s-news-paper"></i><span>Affilliates</span></a>
               </li> --}}
             </ul>

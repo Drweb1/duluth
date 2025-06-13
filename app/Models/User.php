@@ -82,5 +82,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(language::class, 'user_languages');
     }
-
+ public function scopeOfType($query, $type)
+    {
+        return $query->where('type', $type);
+    }
 }

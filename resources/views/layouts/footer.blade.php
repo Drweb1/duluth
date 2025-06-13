@@ -29,7 +29,7 @@
                     <div class="widget footer-widget">
                         <div class="th-widget-about">
                             <div class="about-logo">
-                                <a class="icon-masking" href="{{route('index')}}"><span data-mask-src="{{asset('assets/img/logo/logo.png')}}" class="mask-icon"></span><img src="{{asset('assets/img/logo/logo.png')}}" alt="Duluth"></a>
+                                <a class="icon-masking" href="{{route('index')}}"><span data-mask-src="{{asset('assets/img/logo/logo.png')}}" class="mask-icon"></span><img src="{{asset('assets/img/logo/logo.png')}}" alt="Duluth" style="height: 200px;"></a>
                             </div>
                             <p class="about-text">Our Duluth hospital management system simplifies healthcare operations by offering dedicated tools for efficient nurse scheduling, patient tracking, and client management—enhancing care delivery and streamlining administrative tasks for better outcomes.</p>
                         </div>

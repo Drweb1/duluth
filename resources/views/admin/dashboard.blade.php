@@ -133,6 +133,7 @@ Dashboard
                     <h2>Welcome Back, {{ Auth::user()->name }}</h2>
                     <h6>{{ Auth::user()->type }}</h6>
                 </div>
+                    @if ($currentUserType === 'admin' )
                 <div class="col-lg-6 text-right">
                     <button class="btn btn-primary" data-toggle="modal" data-target="#addClientModal"><i
                             class="fas fa-plus"></i>
@@ -141,7 +142,7 @@ Dashboard
                             class="fas fa-plus"></i>
                         Caregiver</button>
                 </div>
-
+                @endif
             </div>
         </div>
     </div>
@@ -239,7 +240,7 @@ Dashboard
                             </div>
                         </div>
                     </div>
-
+                    @if ($currentUserType === 'admin' )
                     <div class="col-xl-3 xl-50 col-md-6 box-col-6">
                         <div class="card gradient-secondary o-hidden">
                             <div class="card-body tag-card">
@@ -326,7 +327,7 @@ Dashboard
                             </div>
                         </div>
                     </div>
-
+                    @endif
                 </div>
             </div>
         </div>
@@ -337,7 +338,7 @@ Dashboard
                     <div class="card-header no-border pb-1">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h5 class="mb-1">Schedule Visit #{{ $loop->iteration }}</h5>
+                                <h6 class="mb-1 text-bold">Schedule Visit #{{ $loop->iteration }}</h6>
                                 <h6 class="text-primary mb-0">
                                     <i class="fa fa-user-circle me-1"></i>
                                     {{ $schedule->get_client->name ?? 'No Client' }}
@@ -404,7 +405,7 @@ Dashboard
                                 </span>
                             </div>
                             <a href="{{ route('schedule.tasks', $schedule->id) }}" class="btn btn-primary btn-sm btn-shadow">
-                                <i class="fa fa-eye me-1"></i> View Tasks
+                                <i class="fa fa-eye me-1"></i> Start Task
                             </a>
                         </div>
                     </div>

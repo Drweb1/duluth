@@ -132,7 +132,7 @@ Folders
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li><a class="dropdown-item" href="{{route('folder.documents',$folder->id)}}"><i
                                                 class="fa fa-eye me-2"></i>View</a></li>
-
+                            @if ($currentUserType === 'admin' )
                                     <li>
                                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
                                             data-bs-target="#editFolderModal{{ $folder->id }}">
@@ -150,6 +150,7 @@ Folders
                                             <i class="fa fa-trash"></i> Delete
                                         </a>
                                     </li>
+                                    @endif
                                 </ul>
                             </div>
                         </div>

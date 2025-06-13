@@ -5,9 +5,8 @@ Documents
 @section('style')
 <style>
     .dropdown-menu {
-    z-index: 1050;
-}
-
+        z-index: 1050;
+    }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 @endsection
@@ -16,6 +15,7 @@ Documents
     <div class="page-body" style="background-color: #f4f4f4">
         <div class="container-fluid">
             <div class="page-header">
+                @if ($currentUserType === 'admin' )
                 <div class="row">
                     <div class="col-lg-6 main-header">
                         <h2>Documents</h2>
@@ -27,19 +27,20 @@ Documents
                         </a>
                     </div>
                 </div>
+                @endif
             </div>
 
-        @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-        @endif
+            @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+            @endif
 
-        @if(session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-        @endif
+            @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+            @endif
             <div class="row mt-4">
                 <div class="col-md-12">
                     @if($docs->count() > 0)
@@ -114,10 +115,10 @@ Documents
                                                     <i class="far fa-eye"></i>
                                                 </button>
                                                 @elseif(in_array($ext, ['doc', 'docx']))
-                                             <button type="button"
+                                                <button type="button"
                                                     class="btn btn-sm btn-outline-primary open-word-viewer"
-                                                    data-file-url="{{ $fileUrlFull }}"    title="View Word File">
-                                                <i class="far fa-eye"></i></button>
+                                                    data-file-url="{{ $fileUrlFull }}" title="View Word File">
+                                                    <i class="far fa-eye"></i></button>
                                                 @else
                                                 <a href="{{ $fileUrlFull }}" target="_blank"
                                                     class="btn btn-sm btn-outline-primary" title="View File">
@@ -130,35 +131,24 @@ Documents
                                                     <i class="fas fa-download"></i>
                                                 </a>
                                             </div>
-
+                                            @if ($currentUserType === 'admin' )
                                             <div class="dropdown">
                                                 <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
                                                     type="button" data-bs-toggle="dropdown">
                                                     <i class="fas fa-ellipsis-v"></i>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end">
-                                                    {{-- <li>
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#editDocumentModal{{ $document->id }}">
-                                                            <i class="fas fa-edit me-2"></i> Edit
-                                                        </a>
-                                                    </li>
+
                                                     <li>
-                                                        <a class="dropdown-item" href="#">
-                                                            <i class="fas fa-share-alt me-2"></i> Share
-                                                        </a>
-                                                    </li> --}}
-                                                    {{-- <li>
-                                                        <hr class="dropdown-divider">
-                                                    </li> --}}
-                                                    <li>
-                                                        <a href="{{route('document.delete',$document->id)}}" class="dropdown-item text-danger"
+                                                        <a href="{{route('document.delete',$document->id)}}"
+                                                            class="dropdown-item text-danger"
                                                             onclick="return confirm('Are you sure you want to delete this document?')">
                                                             <i class="fas fa-trash-alt me-2"></i> Delete
                                                         </a>
                                                     </li>
                                                 </ul>
                                             </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

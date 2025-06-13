@@ -19,6 +19,7 @@ use App\Models\client_medical_condition;
 use App\Models\user;
 use App\Models\document;
 use App\Models\specialization;
+use App\Helpers\UserHelper;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Models\schedule;
@@ -60,12 +61,33 @@ class AdminController extends Controller
     }
 
     public function dashboard() {
+    //     $schedules=[];
+    //     // dd(Auth::user());
 
+    // if (UserHelper::currentUserType() === 'nurse') {
+    //        $schedules = schedule::where(function($query) {
+    //                 $query->where('nurse_id', session('admin_id'));
+    //             })->where('company_id',session('company_id'))
+    //             ->with('get_client', 'get_tasks')
+    //             ->orderByRaw("CASE WHEN status = 'Completed' THEN 1 ELSE 0 END")
+    //             ->latest()
+    //             // ->take(10)
+    //             ->get();
+    //     }
         $medics=medical_condition::all();
         $requires=special_requirement::all();
         $specializations=specialization::all();
         $languages=language::all();
-        $schedules = schedule::where(function($query) {
+         if (UserHelper::currentUserType()  === 'admin' ){
+              $schedules = schedule::where('company_id',session('company_id'))
+        ->with('get_client', 'get_tasks')
+        ->orderByRaw("CASE WHEN status = 'Completed' THEN 1 ELSE 0 END")
+        ->latest()
+        ->take(10)
+        ->get();
+         }
+         else{
+ $schedules = schedule::where(function($query) {
             $query->where('caregiver_id', session('admin_id'))
                   ->orWhere('nurse_id', session('admin_id'));
         })->where('company_id',session('company_id'))
@@ -74,6 +96,8 @@ class AdminController extends Controller
         ->latest()
         ->take(10)
         ->get();
+
+         }
 
         if ($schedules->count() < 8) {
         $additionalNeeded = 8 - $schedules->count();

@@ -39,7 +39,8 @@ class HomeController extends Controller
             'beds' => 'required|integer|min:1',
             'address' => 'required|string',
             'website' => 'nullable|url',
-            'terms' => 'accepted'
+            'terms' => 'accepted',
+            'u_name'=>'required|string'
         ]);
         // dd("sadg");
         $company = new company();
@@ -50,7 +51,19 @@ class HomeController extends Controller
         $company->beds = $validated['beds'];
         $company->address = $validated['address'];
         $company->website = $validated['website'] ?? null;
-        $company->save();
+        $company->owner=$validated['u_name'];
+        $company->status="active";
+        if($company->save()){
+            $user=new user();
+            $user->email=$validated['email'];
+            $user->phone=$validated['phone'];
+            $user->name=$validated['u_name'];
+             $user->password = Str::random(6);
+             $user->type="admin";
+            $user->company_id=session("company_id");
+            $user->external_id = "caregiver_".substr((string) Str::uuid(), 0, 6);
+            $user->save();
+        }
 
         return response()->json(['message' => 'Company registered successfully']);
     }

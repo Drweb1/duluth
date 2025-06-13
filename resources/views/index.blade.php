@@ -413,48 +413,54 @@
                             <div class="col-md-6 mb-3 mb-md-0">
                                 <label for="facilityName" class="form-label"
                                     style="color: #555; font-weight: 500;">Facility Name*</label>
-                                <input type="text" class="form-control" id="facilityName" name="facility_name"
+                                <input type="text" class="form-control" id="facilityName" name="facility_name" placeholder="Enter Facility Name"
                                     style="padding: 12px 16px; border-radius: 8px; border: 1px solid #ddd;">
                             </div>
                             <div class="col-md-6">
                                 <label for="email" class="form-label"
                                     style="color: #555; font-weight: 500;">Email*</label>
-                                <input type="email" class="form-control" id="email" name="email"
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email"
                                     style="padding: 12px 16px; border-radius: 8px; border: 1px solid #ddd;">
                             </div>
                         </div>
-
                         <div class="row mb-4">
+                             <div class="col-md-6 mb-3 mb-md-0">
+                                <label for="u_name" class="form-label" style="color: #555; font-weight: 500;">Name*</label>
+                                <input type="text" class="form-control" id="u_name" name="u_name" placeholder="Enter Your Name"
+                                    style="padding: 12px 16px; border-radius: 8px; border: 1px solid #ddd;">
+                            </div>
                             <div class="col-md-6 mb-3 mb-md-0">
                                 <label for="phone" class="form-label" style="color: #555; font-weight: 500;">Phone
                                     Number*</label>
-                                <input type="tel" class="form-control" id="phone" name="phone"
+                                <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter Phone"
                                     style="padding: 12px 16px; border-radius: 8px; border: 1px solid #ddd;">
                             </div>
-                            <div class="col-md-6">
+
+                        </div>
+
+                        <div class="row mb-4">
+                             <div class="col-md-6">
                                 <label for="beds" class="form-label" style="color: #555; font-weight: 500;">Number of
                                     Beds*</label>
-                                <input type="number" min="1" class="form-control" id="beds" name="beds"
+                                <input type="number" min="1" class="form-control" id="beds" name="beds" placeholder="Enter Number of Beds Available"
                                     style="padding: 12px 16px; border-radius: 8px; border: 1px solid #ddd;">
                             </div>
-                        </div>
 
-                        <div class="row mb-4">
-                            <div class="col-md-12">
-                                <label for="address" class="form-label" style="color: #555; font-weight: 500;">Facility
-                                    Address*</label>
-                                <textarea class="form-control" id="address" name="address"
-                                    style="padding: 12px 16px; border-radius: 8px; border: 1px solid #ddd; min-height: 100px;"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="row mb-4">
-                            <div class="col-md-12">
+                             <div class="col-md-6">
                                 <label for="website" class="form-label" style="color: #555; font-weight: 500;">Website
                                     (Optional)</label>
                                 <input type="url" class="form-control" id="website" name="website"
                                     placeholder="https://example.com"
                                     style="padding: 12px 16px; border-radius: 8px; border: 1px solid #ddd;">
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                           <div class="col-md-12">
+                                <label for="address" class="form-label" style="color: #555; font-weight: 500;">Facility
+                                    Address*</label>
+                                <textarea class="form-control" id="address" name="address" placeholder="Enter Facility Address"
+                                    style="padding: 12px 16px; border-radius: 8px; border: 1px solid #ddd; min-height: 100px;"></textarea>
                             </div>
                         </div>
 
@@ -471,7 +477,7 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row ">
                             <div class="col-md-12 text-center">
                                 <button type="submit" class="btn btn-primary"
                                     style="background: linear-gradient(135deg, #4F46E5, #8B5CF6); border: none; padding: 12px 28px; border-radius: 12px; font-size: 16px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 300px;">
@@ -906,7 +912,7 @@
         let isValid = true;
 
         // Validation
-        const fields = ['facilityName', 'email', 'phone', 'beds', 'address'];
+        const fields = ['facilityName', 'email', 'phone', 'beds', 'address','u_name'];
         fields.forEach(id => {
             const value = $('#' + id).val().trim();
             if (!value) {
@@ -914,14 +920,15 @@
                 $('#' + id).after(`<div class="text-danger mt-1">This field is required.</div>`);
             }
         });
-         const website = $('#website').val().trim();
-            if (website) {
-                const urlPattern = /^(https?:\/\/)?([\w\-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/;
-                if (!urlPattern.test(website)) {
-                    isValid = false;
-                    $('#website').after(`<div class="text-danger mt-1">Please enter a valid URL.</div>`);
-                }
+       const website = $('#website').val().trim();
+        if (website) {  // Only validate if there's a value
+            const urlPattern = /^(https?:\/\/)?([\w\-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/;
+            if (!urlPattern.test(website)) {
+                isValid = false;
+                $('#website').next('.text-danger').remove();
+                $('#website').after(`<div class="text-danger mt-1">Please enter a valid URL (e.g., example.com or https://example.com)</div>`);
             }
+        }
 
         if (!$('#terms').is(':checked')) {
             isValid = false;

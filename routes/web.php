@@ -13,6 +13,9 @@ use App\Http\Controllers\CareGiverController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+Route::get('/test-user-type', function () {
+    return currentUserType();
+});
 
 Route::match(['get','post'], 'login', [AdminController::class, "login"])->name("admin_login");
 Route::post('logout', [AdminController::class, 'logout'])->name('logout');
