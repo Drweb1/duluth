@@ -110,7 +110,7 @@
 <section style="background-color: #f6f9ff; padding: 40px;" class="mt-5">
     <div
         style="background: linear-gradient(90deg, #3366FF, #9933FF); color: white; padding: 40px; border-radius: 16px; text-align: center;">
-        <h1 style="font-size: 36px; font-weight: bold;">CARESYSTEMS</h1>
+        <h1 style="font-size: 36px; font-weight: bold;" class="text-white">DHCS Care</h1>
         <p style="font-size: 18px; color:#fff">Manage your healthcare appointments, staff, and clients with ease</p>
     </div>
     <div style="display: flex; flex-wrap: wrap; justify-content: center; margin-top: 30px; gap: 20px;">
@@ -505,7 +505,7 @@
                     style="background: linear-gradient(135deg, #f6f9ff 0%, #eef2f6 100%); border-radius: 16px; padding: 30px;">
                     <h2 style="color: #3366FF; font-weight: 700; margin-bottom: 25px;">Our Story</h2>
                     <p style="font-size: 16px; line-height: 1.7; color: #4a5568;">
-                        CARESYSTEMS was founded in 2015 by a team of healthcare professionals and technology experts who
+                        DHCS Care was founded in 2015 by a team of healthcare professionals and technology experts who
                         recognized the growing need for streamlined care coordination. What began as a small project to
                         help local caregivers manage their schedules has evolved into a comprehensive healthcare
                         management platform serving hundreds of providers across the region.
@@ -525,7 +525,7 @@
                         style="font-weight: 700; margin-bottom: 30px; color: #2d3748; position: relative; padding-bottom: 15px;">
                         <span
                             style="position: absolute; bottom: 0; left: 0; width: 60px; height: 4px; background: linear-gradient(90deg, #3366FF, #9933FF); border-radius: 2px;"></span>
-                        Why Choose CARESYSTEMS?
+                        Why Choose DHCS Care?
                     </h3>
 
                     <div class="feature-card"

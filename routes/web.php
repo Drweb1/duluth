@@ -25,6 +25,7 @@ Route::get('/profile',[CustomerController::class,'info'])->name('profile');
 
 Route::get('/',[HomeController::class,'index'])->name('index');
  Route::post('/companies/store', [HomeController::class, 'store'])->name('company.add');
+Route::match(['get','post'],'/sign-up',[AdminController::class,'signup'])->name('signup');
 //dashbaord
 Route::group(['middleware' => ['user_auth']], function () {
     Route::get('reseller_dashboard', [AdminController::class, 'reseller_dashboard'])->name('reseller.dashboard');
@@ -65,5 +66,6 @@ Route::group(['middleware' => ['user_auth']], function () {
     Route::get('/documents/{id}', [DocumentController::class, 'documents'])->name('folder.documents');
     Route::get('/document/delete/{id}', [DocumentController::class, 'delete_doc'])->name('document.delete');
     Route::get('/schedule/profile/{id}',[ScheduleController::class,'profile'])->name('schedule.profile');
+
 });
 

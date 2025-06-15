@@ -18,6 +18,7 @@ Folders
                         <h2>Folders</h2>
                         <h6 class="mb-0">Manage Your Folders</h6>
                     </div>
+                         @if ($currentUserType === 'admin' )
                     <div class="col-lg-6 text-right ">
                         <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                             data-bs-target="#addFolderModal">
@@ -27,6 +28,7 @@ Folders
                             Add Document
                         </a>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>

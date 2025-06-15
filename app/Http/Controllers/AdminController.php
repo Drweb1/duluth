@@ -131,4 +131,33 @@ class AdminController extends Controller
             // $clientsGrowth = 4;
             return view("admin.companies",compact('companies'));
         }
+     public function signup(Request $request)
+{
+    if ($request->isMethod('POST')) {
+        // Validate the request data
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'phone' => 'required|string|max:20',
+            'role' => 'required|string|in:caregiver,nurse',
+            'password' => [
+                'required',
+                'confirmed',
+            ],
+            'terms' => 'accepted'
+        ]);
+        // dd("wegd");
+        $user = new user();
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->phone = $validated['phone'];
+        $user->role = $validated['role'];
+        $user->password = $validated['password'];
+        $user->save();
+        return redirect()->back()
+            ->with('success', 'Registration successful! Please login.');
+    }
+
+    return view('admin.signup');
+}
 }
